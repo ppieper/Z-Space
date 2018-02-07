@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d8f7bee35b3ae654683b196a1585b727
-timeCreated: 1517958682
+timeCreated: 1517972968
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -18,7 +18,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: defaultMat
-    second: {fileID: 2100000, guid: 1aabe45490515e64298819b4c2a9b91c, type: 2}
+    second: {fileID: 2100000, guid: 1550fe72e359847489e6c61ed2986895, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

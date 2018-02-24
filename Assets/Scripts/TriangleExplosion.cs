@@ -55,6 +55,7 @@ public class TriangleExplosion : MonoBehaviour {
 					mesh.triangles = new int[] { 0, 1, 2, 2, 1, 0 };
 
 					GameObject GO = new GameObject("Triangle " + (i / 3));
+					GO.transform.parent = GameObject.Find("World/_Dynamic").transform;
 					GO.layer = LayerMask.NameToLayer("Particle");
 					GO.transform.position = transform.position;
 					GO.transform.rotation = transform.rotation;

@@ -5,10 +5,8 @@ using UnityEngine.UI;
 
 public class ScanResults : MonoBehaviour {
 	
-	private GameObject scannableObject;
 	private Vector3 objectScreenPos;
 	private GameObject playerObject;
-	private Vector3 playerPos;
 	private int distance;
 	private string scanResult;
 	private bool scanActive = false;
@@ -24,10 +22,8 @@ public class ScanResults : MonoBehaviour {
 	// initializations
 	private void Start() 
 	{
-		scannableObject = gameObject;
-		objectScreenPos = scannableObject.transform.position;
+		objectScreenPos = new Vector3();
 		playerObject = GameObject.Find("FPSChar1");
-		playerPos = playerObject.transform.position;
 	}    
 
 	// called multiple times per frame
@@ -53,7 +49,7 @@ public class ScanResults : MonoBehaviour {
 		if (Input.GetButton("Scan"))
 		{
 			// always ensure that the location is up to date before the GUI is displayed
-			objectScreenPos = Camera.main.WorldToScreenPoint(scannableObject.transform.position);
+			objectScreenPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);
 			scanActive = true;
 		} else 
 		{
@@ -74,8 +70,7 @@ public class ScanResults : MonoBehaviour {
 		// if the camera is facing the object, the z axis will be non-negative
 		if (objectScreenPos.z >= 0)
 		{
-			playerPos = playerObject.transform.position;
-			distance = (int)Vector3.Distance(scannableObject.transform.position, playerObject.transform.position);
+			distance = (int)Vector3.Distance(gameObject.transform.position, playerObject.transform.position);
 			scanResult = scanText + " - " + distance.ToString() + "km";
 		}
 	}    

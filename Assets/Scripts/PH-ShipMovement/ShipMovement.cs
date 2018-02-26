@@ -77,7 +77,7 @@ public class ShipMovement : MonoBehaviour {
 
     // Pitch Control
     // uses transform.right for torque
-    transform.RotateAround(transform.position, transform.right, pitchOut);
+    transform.RotateAround(transform.position, transform.right, -pitchOut);
 
     // Yaw Control
     // uses transform.up for torque

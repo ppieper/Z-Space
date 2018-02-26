@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class ShipCamera : MonoBehaviour {
 
+  public GameObject player;
+  private Vector3 offset;
+
   // Use this for initialization
   void Start () {
-    
+    offset = transform.position - player.transform.position;
   }
 
-  // Update is called once per frame
-  void Update () {
-		
-	}
-
-  // Update for many time to deal with physics movement
-  void FixedUpdate()
+  // Update is called after a frame
+  void LateUpdate()
   {
-
+    transform.position = player.transform.position + offset;
   }
- }
+}

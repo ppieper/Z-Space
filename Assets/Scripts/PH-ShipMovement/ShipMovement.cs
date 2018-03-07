@@ -72,8 +72,12 @@ public class ShipMovement : MonoBehaviour {
 
     float pitchOut = Reframe(pitchIn, -Screen.height/2, Screen.height/2, -1, 1);
     float yawOut = Reframe(yawIn, -Screen.width/2, Screen.width/2, -1, 1);
-
-    debug.text = "Pitch: " + pitchOut + ", Yaw: " + yawOut;
+			
+	// debug
+	if (debug) 
+	{
+		debug.text = "Pitch: " + pitchOut + ", Yaw: " + yawOut;
+	}
 
     // Pitch Control
     // uses transform.right for torque

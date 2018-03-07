@@ -32,7 +32,7 @@ public class ScanResults : MonoBehaviour {
 	private void Start() 
 	{
 		objectScreenPos = new Vector3();
-		playerObject = GameObject.Find("FPSChar1");
+		playerObject = GameObject.Find("PH-Ship");
 	}    
 
 	// called multiple times per frame

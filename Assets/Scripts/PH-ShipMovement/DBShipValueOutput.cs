@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DBShipValueOutput : MonoBehaviour {
 
-  public Text SpeedOutput;
+  public Text speedOutput;
 
   private Rigidbody rb;
 
@@ -19,6 +19,9 @@ public class DBShipValueOutput : MonoBehaviour {
   void Update () {
     float velocity = rb.velocity.magnitude;
 
-    SpeedOutput.text = "SPEED: " + (int)velocity;
+    // debug
+	if (speedOutput) {
+		speedOutput.text = "SPEED: " + (int)velocity;
+	}
   }
 }

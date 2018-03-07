@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class ShipMovement : MonoBehaviour {
 
-  public float ThrustStrength = 100.0f;
-  public float BreakForce = 50.0f;
+  public float thrustStrength = 100.0f;
+  public float breakForce = 50.0f;
+  public float rollSpeed = 150.0f;
+  public float turnSpeed = 225.0f;
 
   public Text debug;
 
@@ -38,12 +40,12 @@ public class ShipMovement : MonoBehaviour {
     if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))  // thrust forward
     {
       //Debug.Log("Thrust Forward!");
-      rb.AddForce(front * ThrustStrength, ForceMode.Acceleration);
+      rb.AddForce(front * thrustStrength, ForceMode.Acceleration);
     }
     else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))  // thrust backward
     {
       //Debug.Log("Thrust Backward!");
-      rb.AddForce(front * BreakForce * -1, ForceMode.Acceleration);
+      rb.AddForce(front * breakForce * -1, ForceMode.Acceleration);
     }
   }
 
@@ -54,12 +56,12 @@ public class ShipMovement : MonoBehaviour {
     if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))  // Roll CCW
     {
       //Debug.Log("Roll Left!");
-      transform.RotateAround(transform.position, transform.forward, 1);
+		transform.RotateAround(transform.position, transform.forward, Time.deltaTime*rollSpeed);
     }
     else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))  // Roll CW
     {
       //Debug.Log("Roll Right!");
-      transform.RotateAround(transform.position, transform.forward, 1);
+		transform.RotateAround(transform.position, transform.forward, -Time.deltaTime*rollSpeed);
     }
   }
 
@@ -81,11 +83,11 @@ public class ShipMovement : MonoBehaviour {
 
     // Pitch Control
     // uses transform.right for torque
-    transform.RotateAround(transform.position, transform.right, -pitchOut);
+		transform.RotateAround(transform.position, transform.right, -pitchOut*Time.deltaTime*turnSpeed);
 
     // Yaw Control
     // uses transform.up for torque
-    transform.RotateAround(transform.position, transform.up, yawOut);
+		transform.RotateAround(transform.position, transform.up, yawOut*Time.deltaTime*turnSpeed);
   }
 
   // Backend Functions

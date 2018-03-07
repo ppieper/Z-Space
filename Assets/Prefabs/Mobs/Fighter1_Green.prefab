@@ -23,6 +23,8 @@ GameObject:
   - component: {fileID: 23478895304195072}
   - component: {fileID: 95714083518582924}
   - component: {fileID: 64471563824862560}
+  - component: {fileID: 114795157294054720}
+  - component: {fileID: 114446448175121898}
   m_Layer: 0
   m_Name: Fighter1_Green
   m_TagString: Untagged
@@ -115,3 +117,35 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114446448175121898
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1595253564309200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc763159d97c2c4a9564749577ecf49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scanText: 
+  bounty: 0
+  isEnemy: 1
+  scanFont: {fileID: 12800000, guid: aa41c27cad5ffff4f952add96f3aab3e, type: 3}
+  color: {r: 0.765, g: 0.98, b: 1, a: 1}
+--- !u!114 &114795157294054720
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1595253564309200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32f43f9fce4d6434e9ff64583b4e24e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnSpeed: 1.5
+  moveAngleThreshold: 5
+  moveSpeed: 20
+  aggroRange: 300
+  circleDistance: 30

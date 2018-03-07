@@ -105,6 +105,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4063739074781268}
   - component: {fileID: 111141348315480484}
+  - component: {fileID: 114535443878101856}
+  - component: {fileID: 114161400493438342}
   m_Layer: 0
   m_Name: Fighter2
   m_TagString: Untagged
@@ -388,3 +390,35 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &114161400493438342
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992592023415500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc763159d97c2c4a9564749577ecf49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scanText: 
+  bounty: 0
+  isEnemy: 1
+  scanFont: {fileID: 12800000, guid: aa41c27cad5ffff4f952add96f3aab3e, type: 3}
+  color: {r: 0.765, g: 0.98, b: 1, a: 1}
+--- !u!114 &114535443878101856
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992592023415500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32f43f9fce4d6434e9ff64583b4e24e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnSpeed: 1.5
+  moveAngleThreshold: 5
+  moveSpeed: 20
+  aggroRange: 300
+  circleDistance: 30

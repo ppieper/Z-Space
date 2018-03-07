@@ -10,7 +10,7 @@ public class ScanResults : MonoBehaviour {
 	private int distance;
 	private string scanResult;
 	private bool scanActive = false;
-	private const int SCAN_RANGE = 100;
+	private const int SCAN_RANGE = 1000;
 
 	[TextArea(0,1)]
 	// Input text to display on player's scanner
@@ -31,6 +31,11 @@ public class ScanResults : MonoBehaviour {
 		scanFont = Resources.Load("Fonts/nk57-monospace-cd-bd") as Font;
 		// rgba 195 250 255 255
 		color = new Color(.765F,.98F, 1F, 1F);
+		// auto-set the isEnemy
+		if (GetComponent("EnemyAI"))
+		{
+			isEnemy = true;
+		}
 	}    
 
 	// initializations

@@ -199,8 +199,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38acde9697b82c844a92c49b43ac165e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ThrustStrength: 100
-  BreakForce: 50
+  thrustStrength: 100
+  breakForce: 50
+  rollSpeed: 150
+  turnSpeed: 225
   debug: {fileID: 0}
 --- !u!114 &114290625412008016
 MonoBehaviour:
@@ -213,7 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af4741671b1f934dad07e2311573ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedOutput: {fileID: 0}
+  speedOutput: {fileID: 0}
 --- !u!124 &124187862178226898
 Behaviour:
   m_ObjectHideFlags: 1

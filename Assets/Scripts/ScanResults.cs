@@ -10,10 +10,15 @@ public class ScanResults : MonoBehaviour {
 	private int distance;
 	private string scanResult;
 	private bool scanActive = false;
+	private const int SCAN_RANGE = 100;
 
 	[TextArea(0,1)]
 	// Input text to display on player's scanner
 	public string scanText;
+	// Input bounty display on player's scanner
+	public int bounty;
+	// Is the entity an enemy ship? (we can have bounties on stationary objects, too)
+	public bool isEnemy;
 	// Input font to use for the text display 
 	public Font scanFont;
 	// Input color of the text displayed
@@ -43,9 +48,18 @@ public class ScanResults : MonoBehaviour {
 		{
 			// if the camera is facing the object, the z axis will be non-negative
 			if (objectScreenPos.z >= 0) {
+				// if enemy is out of range, we cannot scan
+				if (isEnemy && distance > SCAN_RANGE) 
+				{
+					return;
+				}
+				// otherwise, display the scan result
 				GUI.skin.font = scanFont;
 				GUI.contentColor = color;
-				GUI.Label (new Rect (objectScreenPos.x, Screen.height - objectScreenPos.y, 500, 30), scanResult);
+				GUIStyle style = GUI.skin.GetStyle ("Label");
+				style.alignment = TextAnchor.UpperCenter;
+				// center the label on the object 
+				GUI.Label (new Rect (objectScreenPos.x-250, Screen.height - objectScreenPos.y-22.5F, 500, 45), scanResult);
 			}
 		}
 	}    
@@ -79,8 +93,18 @@ public class ScanResults : MonoBehaviour {
 		// if the camera is facing the object, the z axis will be non-negative
 		if (objectScreenPos.z >= 0)
 		{
+			// calculate the distance between the player and the object
 			distance = (int)Vector3.Distance(gameObject.transform.position, playerObject.transform.position);
-			scanResult = scanText + " - " + distance.ToString() + "km";
+
+			// if the scannable object is an enemy ship, ignore them until we get closer
+			if (isEnemy && distance > SCAN_RANGE) 
+			{
+				return;
+			}
+			// format the scan result: "OBJECT - 0km 
+			//                          BOUNTY: 0cr " (only if there is a bounty set)
+			// 1 unit = 1 meter
+			scanResult = scanText + " - " + (distance/1000F).ToString() + "km" + ((bounty != 0) ? "\nBOUNTY: " + bounty + "cr\n" : "");
 		}
 	}    
 }

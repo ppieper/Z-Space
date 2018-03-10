@@ -13,6 +13,7 @@ public class Target : MonoBehaviour {
         text.gameObject.transform.position = new Vector3(position.x, position.y + 1f, position.z);
         //GameObject FDTgo = Instantiate(FDT, new Vector3(0, 2, 0), Quaternion.identity);
         health -= amount;
+        Destroy(text);
         if (health <= 0f)
         {
             Die();

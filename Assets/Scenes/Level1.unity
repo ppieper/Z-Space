@@ -1230,11 +1230,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38acde9697b82c844a92c49b43ac165e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cp: {fileID: 1399475973}
   thrustStrength: 100
   breakForce: 50
   rollSpeed: 150
   turnSpeed: 225
-  debug: {fileID: 0}
+  speedToTurnRatio: 0.75
+  straightRatio: 0.1
+  maxFOV: 90
+  inverseY: 0
+  forceDriven: 1
+  torqueDriven: 1
+  fovShift: 1
+  speedOutput: {fileID: 0}
+  pitchYawOutput: {fileID: 0}
 --- !u!54 &1720717887
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1243,7 +1252,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1720717884}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 100
   m_Drag: 1
   m_AngularDrag: 1
   m_UseGravity: 0

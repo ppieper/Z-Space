@@ -499,13 +499,14 @@ MonoBehaviour:
   cp: {fileID: 1736785443}
   thrustStrength: 100
   breakForce: 10
+  cruiseRatio: 1
   rollSpeed: 200
   turnSpeed: 225
   speedToTurnRatio: 0.75
   straightRatio: 0.01
   maxFOV: 105
   inverseY: 0
-  forceDriven: 1
+  forceDriven: 0
   torqueDriven: 1
   fovShift: 1
   speedOutput: {fileID: 495556500}

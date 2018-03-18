@@ -9,6 +9,7 @@ public class ShipMovement : MonoBehaviour {
 
   public float thrustStrength = 100.0f;
   public float breakForce = 50.0f;
+  public float cruiseRatio = 1.0f;
   public float rollSpeed = 150.0f;
   public float turnSpeed = 225.0f;
   public float speedToTurnRatio = 0.75f;
@@ -84,6 +85,13 @@ public class ShipMovement : MonoBehaviour {
         else
           speed -= Time.deltaTime * breakForce;
       }
+    }
+    else  // let go
+    {
+      if (forceDriven)
+        rb.AddForce(front * speed * cruiseRatio, ForceMode.Acceleration);
+      else
+        speed += Time.deltaTime * speed * cruiseRatio;
     }
 
     rb.velocity = front * speed;

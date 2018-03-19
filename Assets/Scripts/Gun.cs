@@ -51,7 +51,7 @@ public class Gun : MonoBehaviour
                 //muzzleFlash.Play();
                 Debug.Log(hit.transform.name);
 
-                Target target = hit.transform.GetComponent<Target>();
+                Target target = hit.transform.GetComponentInParent<Target>();
 
 
                 //

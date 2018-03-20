@@ -63,7 +63,7 @@ public class Gun : MonoBehaviour
                     int dmg = rnd.Next(damageMin, damageMax);  //dmg range
                     target.TakeDamage(dmg);
                     Debug.LogFormat("{0} was dealt {1} damage", target, dmg);
-                    TextMesh textObject = GameObject.Find("FDT").GetComponent<TextMesh>();
+                    TextMesh textObject = GameObject.Find("FDT").GetComponentInParent<TextMesh>();
                     textObject.text = dmg.ToString();
                     GameObject FDTgo = Instantiate(FDT, hit.point, Quaternion.identity); //temp code
 

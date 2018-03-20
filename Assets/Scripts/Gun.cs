@@ -12,6 +12,7 @@ public class Gun : MonoBehaviour
     public int damageMax = 200;
     public Camera fpsCam;
     public ParticleSystem muzzleFlash;
+    public ParticleSystem muzzleFlash2;
     public GameObject impactEffect;
     public GameObject FDT;  //temp code
     public int totalAmmo = 20;
@@ -39,6 +40,7 @@ public class Gun : MonoBehaviour
         {
             RaycastHit hit;
             muzzleFlash.Play();
+            muzzleFlash2.Play();
             totalAmmo = (totalAmmo - 1);
 
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))

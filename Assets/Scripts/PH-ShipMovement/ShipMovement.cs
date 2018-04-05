@@ -15,6 +15,7 @@ public class ShipMovement : MonoBehaviour {
   public float speedToTurnRatio = 0.75f;
   public float straightRatio = 0.1f;
   public float maxFOV = 135f;
+  public float collisionKnockback = 50f;
 
   public bool inverseY = false;
   public bool forceDriven = true;
@@ -62,6 +63,18 @@ public class ShipMovement : MonoBehaviour {
 
     // DB
     debugOutput();
+  }
+
+  // Bounce back on collisions & take some damage
+  public void OnCollisionEnter(Collision obstacle) 
+  {
+	  // get the force vector
+	  Vector3 bounceForce = transform.position - obstacle.transform.position;
+	  // normalize force vector and multiply it by the configurable collisionKnockback value
+	  bounceForce.Normalize();
+	  rb.AddForce(bounceForce * collisionKnockback);
+	  // player takes some damage
+	  gameObject.GetComponent<PlayerHP> ().TakeDamage (5);
   }
 
 

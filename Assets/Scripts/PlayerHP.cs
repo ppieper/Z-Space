@@ -22,7 +22,7 @@ public class PlayerHP : MonoBehaviour {
             TakeDamage(10);
 	}
 
-    void TakeDamage(float value)
+    public void TakeDamage(float value)
     {
         currentHP -= value;
         HPbar.value = calcHPpercentage();

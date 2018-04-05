@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 64471563824862560}
   - component: {fileID: 114795157294054720}
   - component: {fileID: 114446448175121898}
+  - component: {fileID: 54366134395498004}
   m_Layer: 0
   m_Name: Fighter1_Green
   m_TagString: Untagged
@@ -86,6 +87,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1595253564309200}
   m_Mesh: {fileID: 4300000, guid: 247766e192f437c4680b63372b7cb017, type: 3}
+--- !u!54 &54366134395498004
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1595253564309200}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!64 &64471563824862560
 MeshCollider:
   m_ObjectHideFlags: 1

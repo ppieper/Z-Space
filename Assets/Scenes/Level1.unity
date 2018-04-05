@@ -29719,6 +29719,11 @@ Prefab:
       propertyPath: moveSpeed
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 54366134395498004, guid: bd2794b3cb3ec9843aeca6c14dec3983,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 126
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114795157294054720, guid: bd2794b3cb3ec9843aeca6c14dec3983, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: bd2794b3cb3ec9843aeca6c14dec3983, type: 2}
@@ -46991,6 +46996,11 @@ Prefab:
         type: 2}
       propertyPath: bounty
       value: 250
+      objectReference: {fileID: 0}
+    - target: {fileID: 54528125798664088, guid: 1191dd7739ff569459c446fff862c5fd,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 126
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}

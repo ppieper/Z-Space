@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 111141348315480484}
   - component: {fileID: 114535443878101856}
   - component: {fileID: 114161400493438342}
+  - component: {fileID: 54528125798664088}
   m_Layer: 0
   m_Name: Fighter2
   m_TagString: Untagged
@@ -320,6 +321,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1374797479491024}
   m_Mesh: {fileID: 4300000, guid: 58752080b7a2b014b984236fa50b1a31, type: 3}
+--- !u!54 &54528125798664088
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992592023415500}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!64 &64301878023027634
 MeshCollider:
   m_ObjectHideFlags: 1

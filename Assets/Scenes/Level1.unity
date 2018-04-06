@@ -47036,9 +47036,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnSpeed: 1.5
   moveAngleThreshold: 5
-  moveSpeed: 20
-  aggroRange: 300
-  circleDistance: 30
+  moveSpeed: 75
+  aggroRange: 10000
+  circleDistance: 1000
 --- !u!114 &1773894801
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -47079,9 +47079,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnSpeed: 1.5
   moveAngleThreshold: 5
-  moveSpeed: 20
-  aggroRange: 300
-  circleDistance: 30
+  moveSpeed: 75
+  aggroRange: 10000
+  circleDistance: 1000
 --- !u!4 &1773894802 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,

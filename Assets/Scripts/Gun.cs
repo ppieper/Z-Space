@@ -71,23 +71,19 @@ public class Gun : MonoBehaviour
 
                     textObject.text = " ";
 
-
-
                     Destroy(FDTgo, 0.15f);//temp code
 
-
                     //above is creating and destroying the combat text
+
+					if (target.health < 0)
+					{
+						AmmoIncreaseDrop();
+						totalCurrency = (totalCurrency + 10);
+					}
                 }
 
                 GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactGO, 1f);
-                if (target.health < 0)
-                {
-                    AmmoIncreaseDrop();
-                    totalCurrency = (totalCurrency + 10);
-                }
-
-
             }
         }
     }

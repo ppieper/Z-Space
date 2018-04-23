@@ -14,6 +14,10 @@ public class PlayerHP : MonoBehaviour {
         currentHP = maxHP;
 
         HPbar.value = calcHPpercentage();
+
+		// reposition to bottom of screen
+		RectTransform trans = HPbar.GetComponent<RectTransform>();
+		trans.position = new Vector3(Screen.width, Screen.height/20, 0)/2;
 	}
 	
 	// Update is called once per frame

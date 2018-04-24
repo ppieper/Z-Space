@@ -6,43 +6,51 @@ using UnityEngine.UI;
 public class EnemyIndicator : MonoBehaviour {
 
 	public Color color;
+	public Canvas canvas;
+	public GameObject HPBar;
 	private Vector3 screenCenter;
 	private Vector3 screenBounds;
-	private List<GameObject> indicators = new List<GameObject>();
-	[SerializeField]
-	private Canvas canvas;
+	private Sprite target;
+	private Sprite arrow;
 
 	// Use this for initialization
 	void Start () 
 	{
 		screenCenter = new Vector3(Screen.width, Screen.height, 0)/2;
 		screenBounds = screenCenter * 0.95f;
+		target = Resources.Load<Sprite> ("Sprites/Target_no_crosshair");
+		arrow = Resources.Load<Sprite> ("Sprites/Arrow");
 	}
 	
-	// Update is called once per frame
-	void Update () 
+	// LateUpdate is called once per frame, after Update()
+	void LateUpdate () 
 	{
 		DrawIndicators();
 	}
 
 	void DrawIndicators()
 	{
-		GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+		List<Enemy> enemies = EnemyManager.Instance.GetEnemies();
 
-		// erase the previous indicators
-		clearIndicators();
-
-		foreach (GameObject enemy in enemies) 
+		// draw the indicators for each enemy
+		foreach (Enemy enemy in enemies) 
 		{
-			// create a temporary indicator object
-			GameObject indicator = new GameObject("Indicator");
-			indicator.transform.SetParent (canvas.transform);
-			RectTransform trans = indicator.AddComponent<RectTransform>();
-			Image image = indicator.AddComponent<Image>();
-			image.color = color;
+			// get the indicator and its properties
+			GameObject indicator = enemy.GetIndicator();
+
+			// hide when the enemy is out of range
+			if (!enemy.InFireRange ()) 
+			{
+				indicator.active = false;
+				continue;
+			}
+			indicator.active = true;
+			RectTransform trans = enemy.GetIndicatorTransform();
+			Image image = enemy.GetIndicatorImage();
+			GameObject healthBar = enemy.GetHealthBar();
 
 			// get the enemy's screen position
-			Vector3 screenPos = Camera.main.WorldToScreenPoint (enemy.transform.position);
+			Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
 
 			// is the enemy offscreen, or onscreen?
 			if (screenPos.z > 0 && 
@@ -50,14 +58,17 @@ public class EnemyIndicator : MonoBehaviour {
 				screenPos.y > 0 && screenPos.y < Screen.height) 
 			{
 				// onscreen
-				image.sprite = Resources.Load<Sprite> ("Sprites/Target_no_crosshair");
+				image.sprite = target;
 				trans.sizeDelta = new Vector2 (100, 100);
 				indicator.transform.position = screenPos;
+				indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
+				healthBar.transform.localScale = new Vector3(.3f, .3f, .3f);
 			} else 
 			{
 				// offscreen
-				image.sprite = Resources.Load<Sprite> ("Sprites/Arrow");
+				image.sprite = arrow;
 				trans.sizeDelta = new Vector2 (48, 48);
+				healthBar.transform.localScale = new Vector3(.2f, .2f, .2f);
 
 				// invert if behind
 				if (screenPos.z < 0) 
@@ -65,7 +76,6 @@ public class EnemyIndicator : MonoBehaviour {
 				else
 					PlaceOffScreen(screenPos, ref indicator);
 			}
-			indicators.Add(indicator);
 		}
 	}
 
@@ -111,15 +121,5 @@ public class EnemyIndicator : MonoBehaviour {
 		// update offscreen sprite's position and rotation
 		indicator.transform.position = screenPos;
 		indicator.transform.rotation = Quaternion.Euler(0, 0, angle * Mathf.Rad2Deg);
-	}
-
-	void clearIndicators()
-	{
-		// free the previous indicators from the heap
-		foreach (GameObject indicator in indicators) 
-		{
-			Destroy(indicator);
-		}
-		indicators.Clear();
 	}
 }

@@ -6,7 +6,7 @@ public class Gun : MonoBehaviour
 {
 
 
-    public float range = 100f;
+	public float range = Constants.weaponRange;
     public System.Random rnd = new System.Random();
     public int damageMin = 150;
     public int damageMax = 200;

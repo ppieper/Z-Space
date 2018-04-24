@@ -25,6 +25,7 @@ public class Target : MonoBehaviour {
     void Die ()
 
     {
+		EnemyManager.Instance.RemoveEnemy(gameObject.GetComponent<Enemy>());
         Destroy(gameObject);
     }
 }

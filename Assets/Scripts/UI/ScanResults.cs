@@ -32,7 +32,7 @@ public class ScanResults : MonoBehaviour {
 		// rgba 195 250 255 255
 		color = new Color(.765F,.98F, 1F, 1F);
 		// auto-set the isEnemy
-		if (GetComponent("EnemyAI"))
+		if (GetComponent("Enemy"))
 		{
 			isEnemy = true;
 		}
@@ -42,7 +42,7 @@ public class ScanResults : MonoBehaviour {
 	private void Start() 
 	{
 		objectScreenPos = new Vector3();
-		playerObject = GameObject.Find("PH-Ship");
+		playerObject = GameObject.FindGameObjectWithTag("Player");
 	}    
 
 	// called multiple times per frame

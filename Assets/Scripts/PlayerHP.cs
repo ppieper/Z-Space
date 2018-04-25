@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerHP : MonoBehaviour {
 
@@ -47,5 +48,7 @@ public class PlayerHP : MonoBehaviour {
 
         currentHP = 0;
         Debug.Log("Your ship has been destroyed.");
+        EnemyManager.Instance.Cleanup();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

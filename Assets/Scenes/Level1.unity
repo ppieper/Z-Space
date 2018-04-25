@@ -1052,6 +1052,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 198195564710534014, guid: 777ef6d9513a8eb42adc3373d696ea7f,
+        type: 2}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198195564710534014, guid: 777ef6d9513a8eb42adc3373d696ea7f,
+        type: 2}
+      propertyPath: randomSeed
+      value: 1567106946
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 777ef6d9513a8eb42adc3373d696ea7f, type: 2}
   m_IsPrefabParent: 0
@@ -6893,11 +6903,6 @@ Prefab:
       propertyPath: range
       value: 10000
       objectReference: {fileID: 0}
-    - target: {fileID: 114569885369072812, guid: 8f1a66950fcd7dc41be4399345b98e95,
-        type: 2}
-      propertyPath: impactEffect
-      value: 
-      objectReference: {fileID: 100010, guid: 645413a00f7bd0242bbd6d0e5eb6f439, type: 2}
     - target: {fileID: 198031740193088968, guid: 8f1a66950fcd7dc41be4399345b98e95,
         type: 2}
       propertyPath: InitialModule.startLifetime.scalar
@@ -6953,6 +6958,11 @@ Prefab:
       propertyPath: FDTPower
       value: 
       objectReference: {fileID: 1454949003}
+    - target: {fileID: 114569885369072812, guid: 8f1a66950fcd7dc41be4399345b98e95,
+        type: 2}
+      propertyPath: impactEffect
+      value: 
+      objectReference: {fileID: 100006, guid: ccbcfc705a39717429590a9f247ec30a, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8f1a66950fcd7dc41be4399345b98e95, type: 2}
   m_IsPrefabParent: 0
@@ -30669,6 +30679,16 @@ Prefab:
     - target: {fileID: 4500640018559548, guid: ff426fd27dfdc8140a266fb8fb9eacbc, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 198033371372121732, guid: ff426fd27dfdc8140a266fb8fb9eacbc,
+        type: 2}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 198033371372121732, guid: ff426fd27dfdc8140a266fb8fb9eacbc,
+        type: 2}
+      propertyPath: randomSeed
+      value: 2094764400
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ff426fd27dfdc8140a266fb8fb9eacbc, type: 2}

@@ -36,4 +36,10 @@ public class EnemyManager {
 	{
 		enemies.Remove(enemy);
 	}
+
+	// clear the enemies list (e.g. on reloading a level)
+	public void Cleanup()
+	{
+		enemies.Clear();
+	}
 }

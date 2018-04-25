@@ -43,5 +43,9 @@ public class PlayerHP : MonoBehaviour {
 
         currentHP = 0;
         Debug.Log("Your ship has been destroyed.");
+        Application.LoadLevel(Application.loadedLevel);
+        
     }
+
+    
 }

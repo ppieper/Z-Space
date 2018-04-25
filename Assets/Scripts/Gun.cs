@@ -94,6 +94,6 @@ public class Gun : MonoBehaviour
 
     public void AmmoIncreaseDrop()
     {
-        totalAmmo = (totalAmmo + 6);
+        totalAmmo = (totalAmmo + 11);
     }
 }

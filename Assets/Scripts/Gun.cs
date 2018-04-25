@@ -24,7 +24,7 @@ public class Gun : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetButtonDown("Fire1"))
+		if (Input.GetButtonDown("Fire1") && !GameManager.Instance.isPaused)
         {
             Shoot();
 

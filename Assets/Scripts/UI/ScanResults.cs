@@ -74,7 +74,7 @@ public class ScanResults : MonoBehaviour {
 	void Update()
 	{
 		// check to see if the Scan key is held down 
-		if (Input.GetButton("Scan"))
+		if (Input.GetButton("Scan") && !GameManager.Instance.isPaused)
 		{
 			// always ensure that the location is up to date before the GUI is displayed
 			objectScreenPos = Camera.main.WorldToScreenPoint(gameObject.transform.position);

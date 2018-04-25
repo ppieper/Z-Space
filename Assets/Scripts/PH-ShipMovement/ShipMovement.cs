@@ -50,6 +50,9 @@ public class ShipMovement : MonoBehaviour {
   // Update for many time to deal with physics movement
   void FixedUpdate()
   {
+	if (GameManager.Instance.isPaused)
+		return;
+
     // BASIC KEY INPUT
     roll();
     camPitchYaw();

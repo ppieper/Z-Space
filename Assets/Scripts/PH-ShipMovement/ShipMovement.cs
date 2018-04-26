@@ -51,14 +51,15 @@ public class ShipMovement : MonoBehaviour {
   void FixedUpdate()
   {
 	if (GameManager.Instance.isPaused)
-		return;
+	  return;
 
     // BASIC KEY INPUT
     roll();
     camPitchYaw();
 
     refresh();
-    thrust();
+
+	thrust ();
 
     refresh();
     if(cp && fovShift)
@@ -77,7 +78,7 @@ public class ShipMovement : MonoBehaviour {
 	  bounceForce.Normalize();
 	  rb.AddForce(bounceForce * collisionKnockback);
 	  // player takes some damage
-	  gameObject.GetComponent<PlayerHP> ().TakeDamage (5);
+	  gameObject.GetComponent<PlayerHP>().TakeDamage (5);
   }
 
 
@@ -87,10 +88,20 @@ public class ShipMovement : MonoBehaviour {
   {
     if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))  // thrust forward
     {
-      if (forceDriven)
-        rb.AddForce(front * thrustStrength, ForceMode.Acceleration);
-      else
-        speed += Time.deltaTime * thrustStrength;
+	  if (forceDriven) 
+	  {
+		if (GameManager.Instance.IsPlayerOutOfBounds())
+		  rb.AddForce (front * thrustStrength/2, ForceMode.Acceleration);
+		else
+		  rb.AddForce (front * thrustStrength, ForceMode.Acceleration);
+	  }
+	else 
+	{
+				if (GameManager.Instance.IsPlayerOutOfBounds())
+		speed = Time.deltaTime * thrustStrength/2;
+	  else
+		speed += Time.deltaTime * thrustStrength;
+	}
     }
     else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))  // thrust backward
     {

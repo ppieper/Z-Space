@@ -9,8 +9,13 @@ public class PlayerHP : MonoBehaviour {
     public float maxHP;
     public float currentHP;
     public Slider HPbar;
+
+
 	// Use this for initialization
 	void Start () {
+		// make sure the GameManager gets the player's instance
+		GameManager.Instance.SetPlayer(gameObject);
+
         maxHP = 100f;
         currentHP = maxHP;
 
@@ -45,10 +50,8 @@ public class PlayerHP : MonoBehaviour {
 
     void Die()
     {
-
         currentHP = 0;
         Debug.Log("Your ship has been destroyed.");
-        EnemyManager.Instance.Cleanup();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		GameManager.Instance.GameOver();
     }
 }

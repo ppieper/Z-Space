@@ -22,10 +22,11 @@ GameObject:
   - component: {fileID: 33765932110010590}
   - component: {fileID: 23854421402084134}
   - component: {fileID: 95760845637877580}
-  - component: {fileID: 64207824495556720}
-  - component: {fileID: 114648982415066786}
-  - component: {fileID: 114675326834091610}
   - component: {fileID: 54040240122981416}
+  - component: {fileID: 114966906918342512}
+  - component: {fileID: 114173253633686112}
+  - component: {fileID: 114350010478986870}
+  - component: {fileID: 65723365339876722}
   m_Layer: 0
   m_Name: Fighter1_Red
   m_TagString: Untagged
@@ -102,8 +103,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!64 &64207824495556720
-MeshCollider:
+--- !u!65 &65723365339876722
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -111,11 +112,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: 247766e192f437c4680b63372b7cb017, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.3529129, y: 0.2047311, z: 0.24329063}
+  m_Center: {x: 0, y: -0.0000000055879354, z: 0}
 --- !u!95 &95760845637877580
 Animator:
   serializedVersion: 3
@@ -133,7 +132,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114648982415066786
+--- !u!114 &114173253633686112
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -141,15 +140,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1637801753885374}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32f43f9fce4d6434e9ff64583b4e24e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 61642afd83329a446baacfda830fddcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnSpeed: 1.5
-  moveAngleThreshold: 5
-  moveSpeed: 20
-  aggroRange: 300
-  circleDistance: 30
---- !u!114 &114675326834091610
+  enemyIndicators: {fileID: 0}
+  hasShield: 0
+  bounty: 1
+  ammoDrop: 0
+--- !u!114 &114350010478986870
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -160,8 +158,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc763159d97c2c4a9564749577ecf49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanText: 
-  bounty: 0
+  scanText: Pirate
+  bounty: 1
   isEnemy: 1
   scanFont: {fileID: 12800000, guid: aa41c27cad5ffff4f952add96f3aab3e, type: 3}
-  color: {r: 0.765, g: 0.98, b: 1, a: 1}
+  color: {r: 1, g: 0, b: 0, a: 0.957}
+--- !u!114 &114966906918342512
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1637801753885374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8442f3d5a7637fe428bfe1a2dd15fae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 50
+  shield: 5

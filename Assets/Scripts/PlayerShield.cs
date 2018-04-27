@@ -21,7 +21,7 @@ public class PlayerShield : MonoBehaviour {
 	void Update () 
 	{
 		// slowly recharge shield
-		if (currentShield < maxShield)
+		if (currentShield < maxShield && !GameManager.Instance.isPaused)
 			currentShield += rechargeRate;
 		ShieldBar.value = currentShield / maxShield;
 	}

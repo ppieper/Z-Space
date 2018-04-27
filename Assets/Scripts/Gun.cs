@@ -46,8 +46,8 @@ public class Gun : MonoBehaviour
             ShootPowerWeapon();
 
         }
-        ammoText.text = "Ammo: " + totalAmmo.ToString();
-        currencyText.text = "Currency: " + totalCurrency.ToString();
+        ammoText.text = totalAmmo.ToString();
+		currencyText.text = totalCurrency.ToString();
     }
 
 
@@ -94,7 +94,7 @@ public class Gun : MonoBehaviour
 
                     //above is creating and destroying the combat text
 
-					if (target.health < 0)
+					if (target.health <= 0)
 					{
 						AmmoIncreaseDrop();
 						totalCurrency = (totalCurrency + 10);
@@ -148,7 +148,7 @@ public class Gun : MonoBehaviour
 
                     //above is creating and destroying the combat text
 
-                    if (target.health < 0)
+                    if (target.health <= 0)
                     {
                         AmmoIncreaseDrop();
                         totalCurrency = (totalCurrency + 10);

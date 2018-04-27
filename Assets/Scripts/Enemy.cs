@@ -13,9 +13,14 @@ public class Enemy : MonoBehaviour {
 	private RectTransform trans;
 	private GameObject healthBar;
 	private Slider healthSlider;
+	private GameObject shieldBar;
+	private Slider shieldSlider;
 	[SerializeField]
 	private EnemyIndicator enemyIndicators;
 	private float maxHealth;
+	private float maxShield;
+	private float rechargeRate;
+	public bool hasShield;
 
 	void Awake() 
 	{
@@ -24,9 +29,13 @@ public class Enemy : MonoBehaviour {
 		target = gameObject.GetComponent<Target>();
 
 		maxHealth = target.health;
+		maxShield = target.shield;
+		rechargeRate = maxShield/1000f;
 
 		InitializeIndicator();
 		InitializeHealthBar();
+		if(hasShield)
+			InitializeShieldBar();
 
 		EnemyManager.Instance.AddEnemy(this);
 	}
@@ -35,6 +44,8 @@ public class Enemy : MonoBehaviour {
 	void Update () 
 	{
 		UpdateHealthBar();
+		if(hasShield)
+			UpdateShieldBar();
 	}
 		
 	// make sure we destroy the indicator too
@@ -59,16 +70,38 @@ public class Enemy : MonoBehaviour {
 		healthBar = Instantiate(enemyIndicators.HPBar);
 		healthBar.transform.SetParent(indicator.transform);
 		healthBar.transform.position = new Vector3(healthBar.transform.position.x, 
-											       healthBar.transform.position.y - 35, 
+			                                       healthBar.transform.position.y - (hasShield ? 29 : 35),
 											       healthBar.transform.position.z);
 		healthSlider = healthBar.GetComponent<Slider>();
 		healthSlider.value = target.health / maxHealth;
 		healthBar.SetActive(true);
 	}
 
+	// initialize shieldbar portion of indicator
+	private void InitializeShieldBar()
+	{
+		shieldBar = Instantiate(enemyIndicators.SBar);
+		shieldBar.transform.SetParent(indicator.transform);
+		shieldBar.transform.position = new Vector3(shieldBar.transform.position.x, 
+		                                           shieldBar.transform.position.y - 35, 
+		                                           shieldBar.transform.position.z);
+		shieldSlider = shieldBar.GetComponent<Slider>();
+		shieldSlider.value = target.shield / maxShield;
+		shieldBar.SetActive(true);
+	}
+
 	private void UpdateHealthBar()
 	{
 		healthSlider.value = target.health / maxHealth;
+	}
+
+	private void UpdateShieldBar()
+	{
+		// slowly recharge shield
+		if (target.shield < maxShield)
+			target.shield += rechargeRate;
+		shieldSlider.value = target.shield / maxShield;
+
 	}
 
 	public GameObject GetIndicator()
@@ -89,6 +122,11 @@ public class Enemy : MonoBehaviour {
 	public GameObject GetHealthBar()
 	{
 		return healthBar;
+	}
+
+	public GameObject GetShieldBar()
+	{
+		return shieldBar;
 	}
 
 	// are the enemy and player in firing range of one another?

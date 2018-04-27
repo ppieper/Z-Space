@@ -109,7 +109,7 @@ public class ScanResults : MonoBehaviour {
 			// format the scan result: "OBJECT - 0km 
 			//                          BOUNTY: 0cr " (only if there is a bounty set)
 			// 1 unit = 1 meter
-			scanResult = scanText + " - " + (distance/1000F).ToString() + "km" + ((bounty != 0) ? "\nBOUNTY: " + bounty + "cr\n" : "");
+			scanResult = scanText + " - " + (distance/1000F).ToString() + "km" + ((bounty != 0) ? "\nBOUNTY: " + bounty + "ʗʀ\n" : "");
 		}
 	}    
 }

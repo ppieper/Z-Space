@@ -96,8 +96,12 @@ public class Gun : MonoBehaviour
 
 					if (target.health <= 0)
 					{
-						AmmoIncreaseDrop();
-						totalCurrency = (totalCurrency + 10);
+						Enemy enemy = hit.transform.GetComponentInParent<Enemy>();
+						if (enemy) 
+						{
+							AmmoIncreaseDrop(enemy);
+							totalCurrency = (totalCurrency + enemy.bounty);
+						}
 					}
                 }
 
@@ -150,8 +154,12 @@ public class Gun : MonoBehaviour
 
                     if (target.health <= 0)
                     {
-                        AmmoIncreaseDrop();
-                        totalCurrency = (totalCurrency + 10);
+						Enemy enemy = hit.transform.GetComponentInParent<Enemy>();
+						if (enemy) 
+						{
+							AmmoIncreaseDrop(enemy);
+							totalCurrency = (totalCurrency + enemy.bounty);
+						}
                     }
                 }
 
@@ -161,8 +169,9 @@ public class Gun : MonoBehaviour
         }
     }
 
-    public void AmmoIncreaseDrop()
+    public void AmmoIncreaseDrop(Enemy enemy)
     {
-        totalAmmo = (totalAmmo + 6);
+		if(enemy)
+			totalAmmo = (totalAmmo + enemy.ammoDrop);
     }
 }

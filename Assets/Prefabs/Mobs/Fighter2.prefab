@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4463494711012158}
   - component: {fileID: 111766685265599092}
-  - component: {fileID: 64376115674229618}
   m_Layer: 0
   m_Name: CannonMedium_FBX
   m_TagString: Untagged
@@ -88,7 +87,6 @@ GameObject:
   - component: {fileID: 4718995010261658}
   - component: {fileID: 33498932129720470}
   - component: {fileID: 23884850171777000}
-  - component: {fileID: 64301878023027634}
   m_Layer: 0
   m_Name: FighterMedium
   m_TagString: Untagged
@@ -105,9 +103,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4063739074781268}
   - component: {fileID: 111141348315480484}
-  - component: {fileID: 114535443878101856}
-  - component: {fileID: 114161400493438342}
   - component: {fileID: 54528125798664088}
+  - component: {fileID: 114388392114386328}
+  - component: {fileID: 114163902319658470}
+  - component: {fileID: 114046172667622482}
+  - component: {fileID: 65158964492378722}
   m_Layer: 0
   m_Name: Fighter2
   m_TagString: Untagged
@@ -336,34 +336,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
---- !u!64 &64301878023027634
-MeshCollider:
+--- !u!65 &65158964492378722
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1847282523139352}
+  m_GameObject: {fileID: 1992592023415500}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 4300000, guid: d5f02142fd614bc429559c3d9c05482c, type: 3}
---- !u!64 &64376115674229618
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1005064659038234}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 15, y: 15, z: 16}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!111 &111141348315480484
 Animation:
   m_ObjectHideFlags: 1
@@ -406,7 +390,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &114161400493438342
+--- !u!114 &114046172667622482
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -417,12 +401,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc763159d97c2c4a9564749577ecf49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanText: 
-  bounty: 0
+  scanText: Pirate
+  bounty: 1
   isEnemy: 1
   scanFont: {fileID: 12800000, guid: aa41c27cad5ffff4f952add96f3aab3e, type: 3}
-  color: {r: 0.765, g: 0.98, b: 1, a: 1}
---- !u!114 &114535443878101856
+  color: {r: 1, g: 0, b: 0, a: 0.957}
+--- !u!114 &114163902319658470
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -430,11 +414,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1992592023415500}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32f43f9fce4d6434e9ff64583b4e24e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 61642afd83329a446baacfda830fddcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnSpeed: 1.5
-  moveAngleThreshold: 5
-  moveSpeed: 20
-  aggroRange: 300
-  circleDistance: 30
+  enemyIndicators: {fileID: 0}
+  hasShield: 0
+  bounty: 1
+  ammoDrop: 0
+--- !u!114 &114388392114386328
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992592023415500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8442f3d5a7637fe428bfe1a2dd15fae9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 50
+  shield: 5

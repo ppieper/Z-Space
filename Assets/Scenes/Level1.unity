@@ -23246,10 +23246,10 @@ RectTransform:
   m_Father: {fileID: 1105687412}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.25}
-  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &780624971 stripped
 Transform:
@@ -24975,10 +24975,10 @@ RectTransform:
   m_Father: {fileID: 1714935425}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.25}
-  m_AnchorMax: {x: 1, y: 0.75}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &836744474 stripped
 Transform:
@@ -27527,7 +27527,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.5, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &945584981
@@ -27900,7 +27900,7 @@ Prefab:
     - target: {fileID: 224039785616095088, guid: e4db824dbdf1189469929ab10b24d2a3,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 4.81
+      value: 0.0000023842
       objectReference: {fileID: 0}
     - target: {fileID: 224039785616095088, guid: e4db824dbdf1189469929ab10b24d2a3,
         type: 2}
@@ -27975,6 +27975,15 @@ Prefab:
     - target: {fileID: 114981977057495216, guid: e4db824dbdf1189469929ab10b24d2a3,
         type: 2}
       propertyPath: m_FontData.m_MinSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239526758191464, guid: e4db824dbdf1189469929ab10b24d2a3, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114981977057495216, guid: e4db824dbdf1189469929ab10b24d2a3,
+        type: 2}
+      propertyPath: m_FontData.m_Alignment
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -30545,6 +30554,10 @@ Prefab:
       propertyPath: m_Text
       value: "\u0297\u0280"
       objectReference: {fileID: 0}
+    - target: {fileID: 1239526758191464, guid: e4db824dbdf1189469929ab10b24d2a3, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e4db824dbdf1189469929ab10b24d2a3, type: 2}
   m_IsPrefabParent: 0
@@ -31929,18 +31942,15 @@ Prefab:
       propertyPath: m_Name
       value: Pinhead Larry
       objectReference: {fileID: 0}
-    - target: {fileID: 114446448175121898, guid: bd2794b3cb3ec9843aeca6c14dec3983,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: scanText
       value: PINHEAD LARRY
       objectReference: {fileID: 0}
-    - target: {fileID: 114446448175121898, guid: bd2794b3cb3ec9843aeca6c14dec3983,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: bounty
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114795157294054720, guid: bd2794b3cb3ec9843aeca6c14dec3983,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: moveSpeed
       value: 30
       objectReference: {fileID: 0}
@@ -31953,8 +31963,44 @@ Prefab:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: color.a
+      value: 0.95686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 114480140172527948, guid: bd2794b3cb3ec9843aeca6c14dec3983,
+        type: 2}
+      propertyPath: scanText
+      value: Pinhead Larry
+      objectReference: {fileID: 0}
+    - target: {fileID: 114416451183311080, guid: bd2794b3cb3ec9843aeca6c14dec3983,
+        type: 2}
+      propertyPath: hasShield
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114416451183311080, guid: bd2794b3cb3ec9843aeca6c14dec3983,
+        type: 2}
+      propertyPath: bounty
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114416451183311080, guid: bd2794b3cb3ec9843aeca6c14dec3983,
+        type: 2}
+      propertyPath: enemyIndicators
+      value: 
+      objectReference: {fileID: 1055875517}
     m_RemovedComponents:
-    - {fileID: 114795157294054720, guid: bd2794b3cb3ec9843aeca6c14dec3983, type: 2}
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: bd2794b3cb3ec9843aeca6c14dec3983, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1105749198 stripped
@@ -31983,45 +32029,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4327349132019434, guid: bd2794b3cb3ec9843aeca6c14dec3983,
     type: 2}
   m_PrefabInternal: {fileID: 1105749197}
---- !u!114 &1105749201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1105749198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8442f3d5a7637fe428bfe1a2dd15fae9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 50
-  shield: 5
-  FDT: {fileID: 1711407525697716, guid: a49c9b1d6d9dda749b101120e8c32e8d, type: 2}
---- !u!114 &1105749202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1105749198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61642afd83329a446baacfda830fddcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyIndicators: {fileID: 1055875517}
-  hasShield: 1
---- !u!65 &1105749209
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1105749198}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.3529129, y: 0.2047311, z: 0.24329063}
-  m_Center: {x: 0, y: -0.0000000055879354, z: 0}
 --- !u!1001 &1106060298
 Prefab:
   m_ObjectHideFlags: 0
@@ -33539,7 +33546,7 @@ Prefab:
     - target: {fileID: 224517103102130584, guid: a1e80ee5f87f9d947b9ffe234a1b57fd,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 3.45
+      value: -0.000012159
       objectReference: {fileID: 0}
     - target: {fileID: 224517103102130584, guid: a1e80ee5f87f9d947b9ffe234a1b57fd,
         type: 2}
@@ -33615,6 +33622,15 @@ Prefab:
     - target: {fileID: 114248539389336678, guid: a1e80ee5f87f9d947b9ffe234a1b57fd,
         type: 2}
       propertyPath: m_FontData.m_MinSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1163670292395550, guid: a1e80ee5f87f9d947b9ffe234a1b57fd, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114248539389336678, guid: a1e80ee5f87f9d947b9ffe234a1b57fd,
+        type: 2}
+      propertyPath: m_FontData.m_Alignment
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -50329,13 +50345,11 @@ Prefab:
       propertyPath: m_Name
       value: Dirty Dan
       objectReference: {fileID: 0}
-    - target: {fileID: 114161400493438342, guid: 1191dd7739ff569459c446fff862c5fd,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: scanText
       value: DIRTY DAN
       objectReference: {fileID: 0}
-    - target: {fileID: 114161400493438342, guid: 1191dd7739ff569459c446fff862c5fd,
-        type: 2}
+    - target: {fileID: 0}
       propertyPath: bounty
       value: 250
       objectReference: {fileID: 0}
@@ -50348,7 +50362,49 @@ Prefab:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 0}
+      propertyPath: color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: color.a
+      value: 0.956
+      objectReference: {fileID: 0}
+    - target: {fileID: 114163902319658470, guid: 1191dd7739ff569459c446fff862c5fd,
+        type: 2}
+      propertyPath: ammoDrop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114163902319658470, guid: 1191dd7739ff569459c446fff862c5fd,
+        type: 2}
+      propertyPath: bounty
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114046172667622482, guid: 1191dd7739ff569459c446fff862c5fd,
+        type: 2}
+      propertyPath: scanText
+      value: Dirty Dan
+      objectReference: {fileID: 0}
+    - target: {fileID: 114163902319658470, guid: 1191dd7739ff569459c446fff862c5fd,
+        type: 2}
+      propertyPath: enemyIndicators
+      value: 
+      objectReference: {fileID: 1055875517}
+    - target: {fileID: 114163902319658470, guid: 1191dd7739ff569459c446fff862c5fd,
+        type: 2}
+      propertyPath: hasShield
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 65158964492378722, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1773894798 stripped
@@ -50356,20 +50412,6 @@ GameObject:
   m_PrefabParentObject: {fileID: 1992592023415500, guid: 1191dd7739ff569459c446fff862c5fd,
     type: 2}
   m_PrefabInternal: {fileID: 1773894797}
---- !u!114 &1773894799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1773894798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8442f3d5a7637fe428bfe1a2dd15fae9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 50
-  shield: 0
-  FDT: {fileID: 1711407525697716, guid: a49c9b1d6d9dda749b101120e8c32e8d, type: 2}
 --- !u!114 &1773894800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50386,19 +50428,6 @@ MonoBehaviour:
   moveSpeed: 75
   aggroRange: 10000
   circleDistance: 1000
---- !u!114 &1773894801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1773894798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61642afd83329a446baacfda830fddcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyIndicators: {fileID: 1055875517}
-  hasShield: 0
 --- !u!4 &1773894802 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,
@@ -56566,7 +56595,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0.5, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2005428930

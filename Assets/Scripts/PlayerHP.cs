@@ -25,7 +25,7 @@ public class PlayerHP : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Z))
+		if (Input.GetKeyDown(KeyCode.Z) && !GameManager.Instance.isPaused)
             TakeDamage(10);
 	}
 
@@ -38,7 +38,6 @@ public class PlayerHP : MonoBehaviour {
         HPbar.value = calcHPpercentage();
         if (currentHP <= 0)
             Die();
-
     }
 
     float calcHPpercentage()
@@ -50,7 +49,6 @@ public class PlayerHP : MonoBehaviour {
     void Die()
     {
         currentHP = 0;
-        Debug.Log("Your ship has been destroyed.");
 		GameManager.Instance.GameOver();
     }
 }

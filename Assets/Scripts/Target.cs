@@ -5,7 +5,6 @@ public class Target : MonoBehaviour {
 
     public float health = 50f;
 	public float shield = 5f;
-    public GameObject FDT;
 
 	void Start()
 	{
@@ -16,11 +15,6 @@ public class Target : MonoBehaviour {
 
     public void TakeDamage (float amount)
     {
-        var text = Instantiate(FDT);
-        var position = gameObject.transform.position;
-
-        text.gameObject.transform.position = new Vector3(position.x, position.y + 1f, position.z);
-
 		// let shield absorb some damage
 		if (shield != 0) 
 		{
@@ -34,7 +28,6 @@ public class Target : MonoBehaviour {
 			}
 		}
         health -= amount;
-        Destroy(text);
 
         if (health <= 0f)
         {

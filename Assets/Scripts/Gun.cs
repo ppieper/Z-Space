@@ -53,8 +53,6 @@ public class Gun : MonoBehaviour
 
     void Shoot()
     {
-        if (totalAmmo > 0)
-        {
             RaycastHit hit;
             muzzleFlash.Play();
             muzzleFlash2.Play();
@@ -108,7 +106,6 @@ public class Gun : MonoBehaviour
                 GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impactGO, 1f);
             }
-        }
     }
 
     void ShootPowerWeapon()

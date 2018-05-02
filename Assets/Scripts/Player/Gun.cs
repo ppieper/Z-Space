@@ -29,9 +29,12 @@ public class Gun : MonoBehaviour
     public Text currencyText;
     public float fireRate = 15f;
     public float fireRatePower = 1f;
+	public AudioSource primaryFireAudio;
+	public AudioSource altFireAudio;
     private float nextTimeToFire = 0f;
     private float nextTimeToFire1 = 0f;
 	public bool damageText = false;
+	private bool primaryFireAudioPlaying = false;
 
     // Update is called once per frame
     void Update()
@@ -39,16 +42,31 @@ public class Gun : MonoBehaviour
 
 		if (Input.GetButton("Fire1") && !GameManager.Instance.isPaused && Time.time >= nextTimeToFire)
         {
+			if (!primaryFireAudioPlaying) 
+			{
+				primaryFireAudioPlaying = true;
+				primaryFireAudio.loop = true;
+				primaryFireAudio.Play();
+			}
+
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
-
         }
+		// stop audio
+		if (!Input.GetButton ("Fire1")) 
+		{
+			primaryFireAudioPlaying = false;
+			primaryFireAudio.loop = false;
+			primaryFireAudio.Stop();
+		}
+
         if (Input.GetButtonDown("Fire2") && !GameManager.Instance.isPaused && Time.time >= nextTimeToFire1)
         {
+			altFireAudio.Play();
             nextTimeToFire1 = Time.time + 1f / fireRatePower;
             ShootPowerWeapon();
-
         }
+
         ammoText.text = totalAmmo.ToString();
 		currencyText.text = totalCurrency.ToString();
     }

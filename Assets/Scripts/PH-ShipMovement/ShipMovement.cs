@@ -36,6 +36,11 @@ public class ShipMovement : MonoBehaviour {
   private float oldFOV;
   private float fovDiff;
 
+  public AudioSource ambienceSound;
+  public AudioSource engineSound;
+  public float minEnginePitch;
+  public float maxEnginePitch;
+
   // Use this for initialization
   void Start ()
   {
@@ -45,7 +50,32 @@ public class ShipMovement : MonoBehaviour {
     trueRollSpeed = rollSpeed * 2;
     oldFOV = cp.fieldOfView;
     fovDiff = maxFOV - oldFOV;
+	minEnginePitch = 0f;
+	maxEnginePitch = 1.3f;
 	}
+
+  void Update()
+  {
+	if (!ambienceSound.isPlaying) 
+	{
+		ambienceSound.Play(); // the constant drone of the ship's engine
+		ambienceSound.loop = true;
+	}
+
+	if (!engineSound.isPlaying) 
+	{
+		engineSound.Play(); // the ship's thrusters
+		engineSound.loop = true;
+	}
+	else // adjust the sound of the ship's thrusters based on the speed at which it is traveling
+	{
+		float pitch = Mathf.Lerp(minEnginePitch, maxEnginePitch, forceDriven ? rb.velocity.magnitude/100 :
+			                                                                   speed/100);
+		engineSound.pitch = pitch; 
+		//Debug.Log ("Pitch: " + pitch);
+	}
+
+  }
 
   // Update for many time to deal with physics movement
   void FixedUpdate()

@@ -92,6 +92,7 @@ public class GameManager : MonoBehaviour {
 	{
 		pauseMenu.SetActive(true);
 		Time.timeScale = 0;
+		Camera.main.GetComponent<AudioListener>().enabled = false;
 		isPaused = true;
 	}
 
@@ -99,6 +100,7 @@ public class GameManager : MonoBehaviour {
 	{
 		pauseMenu.SetActive(false);
 		Time.timeScale = 1;
+		Camera.main.GetComponent<AudioListener>().enabled = true;
 		isPaused = false;
 	}
 

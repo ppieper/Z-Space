@@ -5,6 +5,7 @@ public class Target : MonoBehaviour {
 
     public float health = 50f;
 	public float shield = 5f;
+	public GameObject deathExplosion;
 
 	void Start()
 	{
@@ -37,7 +38,13 @@ public class Target : MonoBehaviour {
 
     void Die ()
     {
+		if (deathExplosion) {
+			GameObject explosion = Instantiate (deathExplosion);
+			explosion.transform.SetParent(GameObject.FindGameObjectWithTag("WorldDynamic").transform);
+			Destroy (explosion, 1f);
+		}
 		EnemyManager.Instance.RemoveEnemy(gameObject.GetComponent<Enemy>());
         Destroy(gameObject);
+
     }
 }

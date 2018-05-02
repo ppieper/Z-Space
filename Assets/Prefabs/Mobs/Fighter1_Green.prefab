@@ -145,6 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   shield: 5
+  deathExplosion: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}
 --- !u!114 &114416451183311080
 MonoBehaviour:
   m_ObjectHideFlags: 1

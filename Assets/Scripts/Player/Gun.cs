@@ -62,7 +62,6 @@ public class Gun : MonoBehaviour
 
         if (Input.GetButtonDown("Fire2") && !GameManager.Instance.isPaused && Time.time >= nextTimeToFire1)
         {
-			altFireAudio.Play();
             nextTimeToFire1 = Time.time + 1f / fireRatePower;
             ShootPowerWeapon();
         }
@@ -144,6 +143,7 @@ public class Gun : MonoBehaviour
 			laser3.Play();
 			laser4.Play();
             totalAmmo = (totalAmmo - 1);
+			altFireAudio.Play();
 
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {

@@ -7,33 +7,37 @@ using UnityEngine.SceneManagement;
 public class PlayerHP : MonoBehaviour {
 
     public float maxHP;
-    public float currentHP;
+    private float currentHP;
     public Slider HPbar;
+	private PlayerShield shield;
+
+
 	// Use this for initialization
 	void Start () {
-        maxHP = 100f;
+		// make sure the GameManager gets the player's instance
+		GameManager.Instance.SetPlayer(gameObject);
+
+		shield = GetComponent<PlayerShield>();
+
         currentHP = maxHP;
-
         HPbar.value = calcHPpercentage();
-
-		// reposition to bottom of screen
-		RectTransform trans = HPbar.GetComponent<RectTransform>();
-		trans.position = new Vector3(Screen.width, Screen.height/20, 0)/2;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Z))
+		if (Input.GetKeyDown(KeyCode.Z) && !GameManager.Instance.isPaused)
             TakeDamage(10);
 	}
 
     public void TakeDamage(float value)
     {
+
+		if (shield.GetCurrentShield() != 0) 
+			value = shield.TakeDamage(value);
         currentHP -= value;
         HPbar.value = calcHPpercentage();
         if (currentHP <= 0)
             Die();
-
     }
 
     float calcHPpercentage()
@@ -41,14 +45,10 @@ public class PlayerHP : MonoBehaviour {
         return currentHP / maxHP;
 
     }
-
-
+		
     void Die()
     {
-
         currentHP = 0;
-        Debug.Log("Your ship has been destroyed.");
-        EnemyManager.Instance.Cleanup();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		GameManager.Instance.GameOver();
     }
 }

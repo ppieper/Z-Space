@@ -36,6 +36,11 @@ public class ShipMovement : MonoBehaviour {
   private float oldFOV;
   private float fovDiff;
 
+  public AudioSource ambienceSound;
+  public AudioSource engineSound;
+  public float minEnginePitch;
+  public float maxEnginePitch;
+
   // Use this for initialization
   void Start ()
   {
@@ -45,20 +50,46 @@ public class ShipMovement : MonoBehaviour {
     trueRollSpeed = rollSpeed * 2;
     oldFOV = cp.fieldOfView;
     fovDiff = maxFOV - oldFOV;
+	minEnginePitch = 0f;
+	maxEnginePitch = 1.3f;
 	}
+
+  void Update()
+  {
+	if (!ambienceSound.isPlaying) 
+	{
+		ambienceSound.Play(); // the constant drone of the ship's engine
+		ambienceSound.loop = true;
+	}
+
+	if (!engineSound.isPlaying) 
+	{
+		engineSound.Play(); // the ship's thrusters
+		engineSound.loop = true;
+	}
+	else // adjust the sound of the ship's thrusters based on the speed at which it is traveling
+	{
+		float pitch = Mathf.Lerp(minEnginePitch, maxEnginePitch, forceDriven ? rb.velocity.magnitude/100 :
+			                                                                   speed/100);
+		engineSound.pitch = pitch; 
+		//Debug.Log ("Pitch: " + pitch);
+	}
+
+  }
 
   // Update for many time to deal with physics movement
   void FixedUpdate()
   {
 	if (GameManager.Instance.isPaused)
-		return;
+	  return;
 
     // BASIC KEY INPUT
     roll();
     camPitchYaw();
 
     refresh();
-    thrust();
+
+	thrust ();
 
     refresh();
     if(cp && fovShift)
@@ -77,7 +108,7 @@ public class ShipMovement : MonoBehaviour {
 	  bounceForce.Normalize();
 	  rb.AddForce(bounceForce * collisionKnockback);
 	  // player takes some damage
-	  gameObject.GetComponent<PlayerHP> ().TakeDamage (5);
+	  gameObject.GetComponent<PlayerHP>().TakeDamage (5);
   }
 
 
@@ -87,10 +118,20 @@ public class ShipMovement : MonoBehaviour {
   {
     if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))  // thrust forward
     {
-      if (forceDriven)
-        rb.AddForce(front * thrustStrength, ForceMode.Acceleration);
-      else
-        speed += Time.deltaTime * thrustStrength;
+	  if (forceDriven) 
+	  {
+		if (GameManager.Instance.IsPlayerOutOfBounds())
+		  rb.AddForce (front * thrustStrength/2, ForceMode.Acceleration);
+		else
+		  rb.AddForce (front * thrustStrength, ForceMode.Acceleration);
+	  }
+	else 
+	{
+				if (GameManager.Instance.IsPlayerOutOfBounds())
+		speed = Time.deltaTime * thrustStrength/2;
+	  else
+		speed += Time.deltaTime * thrustStrength;
+	}
     }
     else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))  // thrust backward
     {

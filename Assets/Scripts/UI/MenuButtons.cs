@@ -8,7 +8,10 @@ public class MenuButtons : MonoBehaviour {
 	// Load a level
 	public void OnStart(string levelName) 
 	{
-		SceneManager.LoadScene(levelName);
+		if (GameManager.Instance)
+			GameManager.Instance.LoadLevel (levelName);
+		else
+			SceneManager.LoadScene(levelName);
 	}
 
 	// Quit the game
@@ -24,14 +27,12 @@ public class MenuButtons : MonoBehaviour {
 	// Quit to the main menu
 	public void OnQuitToMenu() 
 	{
-		EnemyManager.Instance.Cleanup();
-		SceneManager.LoadScene("Menu");
+		GameManager.Instance.QuitToMenu();
 	}
 
 	// Restart level
 	public void OnRestart() 
 	{
-		EnemyManager.Instance.Cleanup();
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		GameManager.Instance.Reload();
 	}
 }

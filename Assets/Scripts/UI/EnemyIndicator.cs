@@ -8,6 +8,7 @@ public class EnemyIndicator : MonoBehaviour {
 	public Color color;
 	public Canvas canvas;
 	public GameObject HPBar;
+	public GameObject SBar;
 	private Vector3 screenCenter;
 	private Vector3 screenBounds;
 	private Sprite target;
@@ -48,6 +49,7 @@ public class EnemyIndicator : MonoBehaviour {
 			RectTransform trans = enemy.GetIndicatorTransform();
 			Image image = enemy.GetIndicatorImage();
 			GameObject healthBar = enemy.GetHealthBar();
+			GameObject shieldBar = enemy.GetShieldBar();
 
 			// get the enemy's screen position
 			Vector3 screenPos = Camera.main.WorldToScreenPoint(enemy.transform.position);
@@ -63,12 +65,16 @@ public class EnemyIndicator : MonoBehaviour {
 				indicator.transform.position = screenPos;
 				indicator.transform.rotation = Quaternion.Euler(0, 0, 0);
 				healthBar.transform.localScale = new Vector3(.3f, .3f, .3f);
+				if (enemy.hasShield)
+					shieldBar.transform.localScale = new Vector3(.3f, .3f, .3f);
 			} else 
 			{
 				// offscreen
 				image.sprite = arrow;
 				trans.sizeDelta = new Vector2 (48, 48);
 				healthBar.transform.localScale = new Vector3(.2f, .2f, .2f);
+				if (enemy.hasShield)
+					shieldBar.transform.localScale = new Vector3(.2f, .2f, .2f);
 
 				// invert if behind
 				if (screenPos.z < 0) 

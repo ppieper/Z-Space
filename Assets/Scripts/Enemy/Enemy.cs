@@ -21,6 +21,15 @@ public class Enemy : MonoBehaviour {
 	private float maxShield;
 	private float rechargeRate;
 	public bool hasShield;
+	public int bounty;
+	public int ammoDrop;
+
+	// called in editor when reset button is pressed, or when script is first attached
+	private void Reset() 
+	{
+		// set the default inspector values for convenience
+		enemyIndicators = FindObjectOfType<EnemyIndicator>();
+	}    
 
 	void Awake() 
 	{
@@ -44,7 +53,7 @@ public class Enemy : MonoBehaviour {
 	void Update () 
 	{
 		UpdateHealthBar();
-		if(hasShield)
+		if(hasShield && !GameManager.Instance.isPaused)
 			UpdateShieldBar();
 	}
 		

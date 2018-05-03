@@ -32,9 +32,12 @@ public class ScanResults : MonoBehaviour {
 		// rgba 195 250 255 255
 		color = new Color(.765F,.98F, 1F, 1F);
 		// auto-set the isEnemy
-		if (GetComponent("Enemy"))
+		if (GetComponent<Enemy>())
 		{
 			isEnemy = true;
+			// rgba 255 0 0 244
+			color = new Color(1F, 0, 0, .957F);
+			bounty = GetComponent<Enemy>().bounty;
 		}
 	}    
 
@@ -43,6 +46,10 @@ public class ScanResults : MonoBehaviour {
 	{
 		objectScreenPos = new Vector3();
 		playerObject = GameObject.FindGameObjectWithTag("Player");
+		Enemy enemy = GetComponent<Enemy>();
+		// if it's an enemy, use the enemy's bounty value instead
+		if(enemy)
+			bounty = enemy.bounty;
 	}    
 
 	// called multiple times per frame
@@ -64,7 +71,7 @@ public class ScanResults : MonoBehaviour {
 				GUIStyle style = GUI.skin.GetStyle ("Label");
 				style.alignment = TextAnchor.UpperCenter;
 				// center the label on the object 
-				GUI.Label (new Rect (objectScreenPos.x-250, Screen.height - objectScreenPos.y-22.5F, 500, 45), scanResult);
+				GUI.Label (new Rect (objectScreenPos.x-250, Screen.height - objectScreenPos.y+45.5F, 500, 45), scanResult);
 			}
 		}
 	}    
@@ -106,10 +113,10 @@ public class ScanResults : MonoBehaviour {
 			{
 				return;
 			}
-			// format the scan result: "OBJECT - 0km 
+			// format the scan result: "OBJECT - 0m 
 			//                          BOUNTY: 0cr " (only if there is a bounty set)
 			// 1 unit = 1 meter
-			scanResult = scanText + " - " + (distance/1000F).ToString() + "km" + ((bounty != 0) ? "\nBOUNTY: " + bounty + "ʗʀ\n" : "");
+			scanResult = scanText + " - " + distance.ToString() + "m" + ((bounty != 0) ? "\nBOUNTY: " + bounty + "ʗʀ\n" : "");
 		}
 	}    
 }

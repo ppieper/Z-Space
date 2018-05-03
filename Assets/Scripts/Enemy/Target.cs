@@ -5,7 +5,7 @@ public class Target : MonoBehaviour {
 
     public float health = 50f;
 	public float shield = 5f;
-    public GameObject FDT;
+	public GameObject deathExplosion;
 
 	void Start()
 	{
@@ -16,11 +16,6 @@ public class Target : MonoBehaviour {
 
     public void TakeDamage (float amount)
     {
-        var text = Instantiate(FDT);
-        var position = gameObject.transform.position;
-
-        text.gameObject.transform.position = new Vector3(position.x, position.y + 1f, position.z);
-
 		// let shield absorb some damage
 		if (shield != 0) 
 		{
@@ -34,7 +29,6 @@ public class Target : MonoBehaviour {
 			}
 		}
         health -= amount;
-        Destroy(text);
 
         if (health <= 0f)
         {
@@ -44,7 +38,13 @@ public class Target : MonoBehaviour {
 
     void Die ()
     {
+		if (deathExplosion) {
+			GameObject explosion = Instantiate (deathExplosion);
+			explosion.transform.SetParent(GameObject.FindGameObjectWithTag("WorldDynamic").transform);
+			Destroy (explosion, 1f);
+		}
 		EnemyManager.Instance.RemoveEnemy(gameObject.GetComponent<Enemy>());
         Destroy(gameObject);
+
     }
 }

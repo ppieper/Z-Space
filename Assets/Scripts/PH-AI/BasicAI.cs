@@ -12,33 +12,39 @@ public class BasicAI : MonoBehaviour {
     // DIVERT :: When dangerously close, the enemy turns away to prevent crashing
     // OVERTAKE :: When closing in to the player, chasing, overtake onto the side
     // REALIGN :: After overtaking, turn around to reapproach to the player
+  // list of possible objects
+  enum DetectOutput { NONE, PLAYER, OBSTACLE };
+    // NONE :: Detect nothing in range of overtakeRange nor divertRange
+    // PLAYER :: Detect the player in divertRange and nothing else in overtakeRange
+    // OBSTACLE :: Detect an object overtakeRange regardless of divertRange notices player
 
   // AI Properties
-  public float cruiseSpeed = 10.0f;       // speed of the AI when not in combat
-  // public float fov = 60.0f;               // angle of view cone of AI to notice the player
-  // public float viewRange = 2500.0f;       // effective range of the view cone of the AI to notice the player
-  public float senseRange = 2500.0f;      // effective range of the sense sphere of the AI to notice the player
+  public float cruiseSpeed = 10.0f;            // speed of the AI when not in combat
+  // public float fov = 60.0f;                    // angle of view cone of AI to notice the player
+  // public float viewRange = 2500.0f;            // effective range of the view cone of the AI to notice the player
+  public float senseRange = 2500.0f;           // effective range of the sense sphere of the AI to notice the player
 
-  public float combatSpeed = 75.0f;       // speed of the AI when in combat
-  public float turnSpeed = 200.0f;        // turn speed of the AI
+  public float combatSpeed = 75.0f;            // speed of the AI when in combat
+  public float turnSpeed = 200.0f;             // turn speed of the AI
 
-  public float divertRange = 50.0f;       // effective range of when they should start to move away from crashing
-  public float overtakeRange = 100.0f;    // effective range of when they start to attempt to overtake you
-  public float sideOvertakeRange = 7.5f;  // potential range of the distance of the player by the side
-  public float realignRange = 250.0f;     // effective range of when they move away from the player before returning back in
+  public float divertRange = 75.0f;            // effective range of when they should start to move away from crashing (Should be bigger than overtakeRange)
+  public float overtakeRange = 50.0f;          // effective range of when they start to attempt to overtake you
+  public float sideOvertakeRange = 7.5f;       // potential range of the distance of the player by the side
+  public float realignRange = 250.0f;          // effective range of when they move away from the player before returning back in
 
-  private States state;                   // Current State of the AI
-  private States prev;                    // Previous State of the AI (for Divert)
+  private States state;                        // Current State of the AI
+  private States prev;                         // Previous State of the AI (for Divert)
 
-  private Rigidbody enemyOwnRB;           // Rigidbody of the AI
-  private GameObject playerObject;        // Reference to the player ship for position and other what not
+  private Rigidbody enemyOwnRB;                // Rigidbody of the AI
+  private GameObject playerObject;             // Reference to the player ship for position and other what not
 
-  private Ray detectRay;                  // Ray for detecting stuff
-  private RaycastHit detectHit;           // Helper attribute for detectRay
-  private Plane relativePlayerPlane;      // Plane for overtaking player
-  private float distanceToPlayerPlane;    // Distance for trying to overtake player
-  private float planarDistanceToPlayer;   // Distance on plane from player for successful overtake
-  private string objectName;              // The output string of what the detectRay found
+  private Ray detectRay;                       // Ray for detecting stuff
+  private RaycastHit detectHit;                // Helper attribute for detectRay
+  private Plane relativePlayerPlane;           // Plane for overtaking player
+  private float distanceToPlayerPlane;         // Distance for trying to overtake player
+  private float planarDistanceToPlayer;        // Distance on plane from player for successful overtake
+  private DetectOutput detectResult;           // The output string of what the detectRay found
+  private float detectFromOverlapBias = 5.0f;  // Evoked bias for if detect player in one range, should also move ray towards to fix it
 
 
   // Use this for initialization
@@ -222,11 +228,62 @@ public class BasicAI : MonoBehaviour {
     detectRay.origin = this.transform.position;
     detectRay.direction = this.transform.forward;
 
-    // get the object for detection
-    if (Physics.Raycast(detectRay, out detectHit, rayLength))
-      objectName = interationRayHit.transform.GameObject.name;
+    // compute the possible output for detectResult
+    // check if an object is within range of overtakeRange to check for player ship
+    if (Physics.Raycast(detectRay, out detectHit, overtakeRange))
+    {
+      // verify if it is actually the player ship
+      if (detectHit.transform.GameObject.name == "PH-Ship")
+      {
+        // if so, check what is ahead to divertRange
+        // first change detectRay's origin pushing past the ship w/ some bias and add the length
+        float offsetLength = detectHit.distance + detectFromOverlapBias;
+        detectRay.origin += detectRay.direction * offsetLength;
+
+        if (Physics.Raycast(detectRay, out detectHit, divertRange - offsetLength))
+        {
+          // if there is an object past player, return an OBSTACLE DetectOutput
+          detectResult = DetectOutput.OBSTACLE;
+        }
+        else
+        {
+          // if there's nothing else past player, return an PLAYER DetectOutput
+          detectResult = DetectOutput.PLAYER;
+        }
+
+        // revert back the origin to enemy
+        detectRay.origin = this.transform.position;
+      }
+      else
+      {
+        // if not, return an OBSTACLE DetectOutput
+        detectResult = DetectOutput.OBSTACLE;
+      }
+    }
     else
-      objectName = "-";
+    {
+      // if not within overtakeRange, check if within divertRange instead
+      if (Physics.Raycast(detectRay, out detectHit, divertRange))
+      {
+        // verify if it is definitely not the player ship
+        if (detectHit.transform.GameObject.name != "PH-Ship")
+        {
+          // if so, return an OBSTACLE DetectOutput
+          detectResult = DetectOutput.OBSTACLE;
+        }
+        else
+        {
+          // if not, return a NONE DetectOutput
+          detectResult = DetectOutput.NONE;
+        }
+      }
+      else
+      {
+        // if not within divertRange, return a NONE DetectOutput
+        detectResult = DetectOutput.NONE;
+      }
+    }
+
   }
 
   // debug on draw gizmo

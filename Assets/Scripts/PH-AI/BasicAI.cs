@@ -22,9 +22,10 @@ public class BasicAI : MonoBehaviour {
   public float combatSpeed = 75.0f;       // speed of the AI when in combat
   public float turnSpeed = 200.0f;        // turn speed of the AI
 
-  public float overtakeRange = 25.0f;     // effective range of when they start to attempt to overtake you
-  public float sideOvertakeRange = 5.0f;     // potential range of the distance of the player by the side
-  public float realignRange = 100.0f;     // effective range of when they move away from the player before returning back in
+  public float divertRange = 50.0f;       // effective range of when they should start to move away from crashing
+  public float overtakeRange = 100.0f;    // effective range of when they start to attempt to overtake you
+  public float sideOvertakeRange = 7.5f;  // potential range of the distance of the player by the side
+  public float realignRange = 250.0f;     // effective range of when they move away from the player before returning back in
 
   private States state;                   // Current State of the AI
   private States prev;                    // Previous State of the AI (for Divert)
@@ -32,10 +33,12 @@ public class BasicAI : MonoBehaviour {
   private Rigidbody enemyOwnRB;           // Rigidbody of the AI
   private GameObject playerObject;        // Reference to the player ship for position and other what not
 
-  // private Ray detect;                     // Ray for detecting stuff
+  private Ray detectRay;                  // Ray for detecting stuff
+  private RaycastHit detectHit;           // Helper attribute for detectRay
   private Plane relativePlayerPlane;      // Plane for overtaking player
   private float distanceToPlayerPlane;    // Distance for trying to overtake player
   private float planarDistanceToPlayer;   // Distance on plane from player for successful overtake
+  private string objectName;              // The output string of what the detectRay found
 
 
   // Use this for initialization
@@ -43,14 +46,17 @@ public class BasicAI : MonoBehaviour {
   {
     // get the player object for reference
     playerObject = GameObject.Find("PH-Ship");
-
     // get the enemy ship stuff for movement
-    rb = GetComponent<Rigidbody>();
+    enemyOwnRB = GetComponent<Rigidbody>();
 
     // initialize the states
     prev = state = States.CRUISE;
 
-    //UpdateStuff();
+    // initialize the latter stuff (from UpdateStuff w/ initialization)
+    detectRay = new Ray(this.transform.position, this.transform.forward);
+    relativePlayerPlane = new Plane(this.transform.forward, playerObject.transform.position);
+
+    UpdateStuff();
   }
 	
 	// Update is called once per frame
@@ -79,7 +85,7 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.APPROACH)
     {
       // ACTION :: Turn themselves to the player to attack
-      rb.AddForce(transform.forward * combatSpeed, ForceMode.Acceleration);
+      //rb.AddForce(transform.forward * combatSpeed, ForceMode.Acceleration);
 
 
       // TRANSITION to DIVERT :: Check if they might almost crash
@@ -164,14 +170,16 @@ public class BasicAI : MonoBehaviour {
     if (state == States.CRUISE)
     {
       // ACTION :: Default state that just roam around until it senses a player
-      rb.AddForce(transform.forward * cruiseSpeed, ForceMode.Acceleration);
+      //enemyOwnRB.AddForce(transform.forward*cruiseSpeed, ForceMode.Acceleration);
 
+      this.transform.Translate(0, 0, cruiseSpeed * Time.deltaTime);
     }
     else if (state == States.APPROACH)
     {
       // ACTION :: Turn themselves to the player to attack
-      rb.AddForce(transform.forward * combatSpeed, ForceMode.Acceleration);
+      //enemyOwnRB.AddForce(transform.forward*combatSpeed, ForceMode.Acceleration);
 
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
     }
     else if (state == States.ATTACK)
     {
@@ -194,20 +202,31 @@ public class BasicAI : MonoBehaviour {
       
     }
 
-    //UpdateStuff();
+    UpdateStuff();
   }
 
 
   private void UpdateStuff()
   {
     // set the relative player plane at the player with the normal of the enemy's forward
-    relativePlayerPlane = Plane(this.transform.forward, playerObject.transform.position);
+    relativePlayerPlane.SetNormalAndPosition(this.transform.forward, playerObject.transform.position);
+
     // set the point on plane for the proceeding 
     Vector3 pointOnPlane = relativePlayerPlane.ClosestPointOnPlane(this.transform.position);
     // calculate the current distance to plane
     distanceToPlayerPlane = Vector3.Distance(this.transform.position, pointOnPlane);
     // calculate the current distance on plane to player
     planarDistanceToPlayer = Vector3.Distance(pointOnPlane, playerObject.transform.position);
+
+    // reset the ray to point
+    detectRay.origin = this.transform.position;
+    detectRay.direction = this.transform.forward;
+
+    // get the object for detection
+    if (Physics.Raycast(detectRay, out detectHit, rayLength))
+      objectName = interationRayHit.transform.GameObject.name;
+    else
+      objectName = "-";
   }
 
   // debug on draw gizmo

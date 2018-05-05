@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,8 +44,14 @@ public class BasicAI : MonoBehaviour {
   private float distanceToPlayerPlane;         // Distance for trying to overtake player
   private float planarDistanceToPlayer;        // Distance on plane from player for successful overtake
   private DetectOutput detectResult;           // The output string of what the detectRay found
+  private bool playerOnCrosshair;              // Check if the player is on the enemy's cross-hair (independent of other ranges)
   private float detectFromOverlapBias = 5.0f;  // Evoked bias for if detect player in one range, should also move ray towards to fix it
 
+
+  void Awake()
+  {
+    playerObject = GameObject.Find("PH-Ship");
+  }
 
   // Use this for initialization
   void Start ()
@@ -71,19 +77,19 @@ public class BasicAI : MonoBehaviour {
     if (state == States.CRUISE)
     {
       // ACTION :: Default state that just roam around until it senses a player
-
+      // no additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to APPROACH :: Check if they sense the player
-      else if (false)
+      else if (Vector3.Distance(playerObject.transform.position, this.transform.position) <= senseRange)
       {
         state = States.APPROACH;
         //  TRANSITION to ATTACK :: Check if they already have player in their cross-hair
-        if (false) {
+        if (playerOnCrosshair) {
           state = States.ATTACK;
         }
       }
@@ -91,16 +97,15 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.APPROACH)
     {
       // ACTION :: Turn themselves to the player to attack
-      //rb.AddForce(transform.forward * combatSpeed, ForceMode.Acceleration);
-
+      // no additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to ATTACK :: Check if they have player in their cross-hair
-      else if (false)
+      else if (playerOnCrosshair)
       {
         state = States.ATTACK;
       }
@@ -108,15 +113,15 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.ATTACK)
     {
       // ACTION :: Fire at the player
-
+      // No additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to APPROACH :: Check if they have player is out of their cross-hair
-      else if (false)
+      else if (!playerOnCrosshair)
       {
         state = States.APPROACH;
       }
@@ -124,10 +129,10 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.DIVERT)
     {
       // ACTION :: Turn away from crashing
-
+      // no additional code required
 
       // TRANSITION to [PREVIOUS STATE] :: Check if they successfully divert
-      if (false)
+      if (detectResult != DetectOutput.OBSTACLE)
       {
         state = prev;
       }
@@ -138,16 +143,16 @@ public class BasicAI : MonoBehaviour {
 
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to REALIGN :: Check if they are on the side of the player
-      else if (false)
+      else if (distanceToPlayerPlane >= detectFromOverlapBias)
       {
         state = States.REALIGN;
       } // TRANSITION to APPROACH :: Check if the player is too fast to try to overtake
-      else if (false)
+      else if (detectResult == DetectOutput.NONE)
       {
         state = States.APPROACH;
       }
@@ -155,15 +160,15 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.REALIGN)
     {
       // ACTION :: After overtaking, turn around to reapproach to the player
-
+      // no additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to APPROACH :: Check if they are away enough to then return back to action
-      else if (false)
+      else if (Vector3.Distance(playerObject.transform.position, this.transform.position) >= realignRange)
       {
         state = States.APPROACH;
       }
@@ -177,35 +182,34 @@ public class BasicAI : MonoBehaviour {
     {
       // ACTION :: Default state that just roam around until it senses a player
       //enemyOwnRB.AddForce(transform.forward*cruiseSpeed, ForceMode.Acceleration);
-
       this.transform.Translate(0, 0, cruiseSpeed * Time.deltaTime);
     }
     else if (state == States.APPROACH)
     {
       // ACTION :: Turn themselves to the player to attack
       //enemyOwnRB.AddForce(transform.forward*combatSpeed, ForceMode.Acceleration);
-
       this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // TODO: Add turning
     }
     else if (state == States.ATTACK)
     {
       // ACTION :: Fire at the player
-
+      // TODO: Add attack mechanic while moving and turning
     }
     else if (state == States.DIVERT)
     {
       // ACTION :: Turn away from crashing
-
+      // TODO: Add moving and turning
     }
     else if (state == States.OVERTAKE)
     {
       // ACTION :: When closing in to the player, chasing, overtake onto the side
-
+      // TODO: maintain distance of the circle with movement and SHIFT
     }
     else if (state == States.REALIGN)
     {
       // ACTION :: After overtaking, turn around to reapproach to the player
-      
+      // TODO: Turn away from the player
     }
 
     UpdateStuff();
@@ -228,12 +232,30 @@ public class BasicAI : MonoBehaviour {
     detectRay.origin = this.transform.position;
     detectRay.direction = this.transform.forward;
 
+    // check if the player is on the cross-hair of the enemy
+    if (Physics.Raycast(detectRay, out detectHit))
+    {
+      // verify if it is actually the player ship
+      if (detectHit.transform.gameObject.name == "PH-Ship")
+      {
+        playerOnCrosshair = true;
+      }
+      else
+      {
+        playerOnCrosshair = false;
+      }
+    }
+    else
+    {
+      playerOnCrosshair = false;
+    }
+
     // compute the possible output for detectResult
     // check if an object is within range of overtakeRange to check for player ship
     if (Physics.Raycast(detectRay, out detectHit, overtakeRange))
     {
       // verify if it is actually the player ship
-      if (detectHit.transform.GameObject.name == "PH-Ship")
+      if (detectHit.transform.gameObject.name == "PH-Ship")
       {
         // if so, check what is ahead to divertRange
         // first change detectRay's origin pushing past the ship w/ some bias and add the length
@@ -266,7 +288,7 @@ public class BasicAI : MonoBehaviour {
       if (Physics.Raycast(detectRay, out detectHit, divertRange))
       {
         // verify if it is definitely not the player ship
-        if (detectHit.transform.GameObject.name != "PH-Ship")
+        if (detectHit.transform.gameObject.name != "PH-Ship")
         {
           // if so, return an OBSTACLE DetectOutput
           detectResult = DetectOutput.OBSTACLE;
@@ -283,25 +305,69 @@ public class BasicAI : MonoBehaviour {
         detectResult = DetectOutput.NONE;
       }
     }
-
   }
 
   // debug on draw gizmo
-  /*
   private void OnDrawGizmos()
   {
-    Gizmos.color = Color.red;
-    // draw sense sphere
-    Gizmos.DrawWireSphere(transform.position, senseRange);
-    // draw view range
-    Gizmos.DrawRay(transform.position, transform.forward * viewRange);
-    // draw overtake range
-    Gizmos.color = Color.green;
-    Gizmos.DrawWireSphere(transform.position, overtakeRange);
-    Gizmos.DrawWireSphere(transform.position, sideOTRange);
-    // draw realign
-    Gizmos.color = Color.cyan;
-    Gizmos.DrawWireSphere(transform.position, realignRange);
+    Color temp = Color.cyan;
+
+    if (state == States.CRUISE)
+    {
+      temp = Color.cyan;
+      Gizmos.color = temp;
+
+      // draw sense sphere
+      Gizmos.DrawWireSphere(this.transform.position, senseRange);
+    }
+    else if (state == States.APPROACH)
+    {
+      temp = Color.yellow;
+    }
+    else if (state == States.ATTACK)
+    {
+      temp = Color.red;
+    }
+    else if (state == States.DIVERT)
+    {
+      temp = Color.magenta;
+    }
+    else if (state == States.OVERTAKE)
+    {
+      temp = Color.green;
+    }
+    else if (state == States.REALIGN)
+    {
+      temp = new Color(0.5F, 0.5F, 1.0F);
+    }
+    
+
+    // General Gizmos
+    Gizmos.color = temp;
+    Gizmos.DrawWireSphere(this.transform.position, 10.0f);
+
+    // draw ray of divert range
+    Gizmos.DrawRay(this.transform.position + this.transform.forward * divertRange, this.transform.forward * (overtakeRange-divertRange));
+
+    // Create a ring
+    Vector3 prevVec, currVec;
+    int curveFidelity = 32;
+    float radStep = Mathf.PI * 2 / curveFidelity;
+    currVec = this.transform.right * sideOvertakeRange + playerObject.transform.position;
+    for (int i = 1; i <= curveFidelity; ++i)
+    {
+      prevVec = currVec;
+      currVec = (this.transform.right * Mathf.Cos(radStep * i) + this.transform.up * Mathf.Sin(radStep * i)) * sideOvertakeRange + playerObject.transform.position;
+      Gizmos.DrawLine(prevVec,currVec);
+    }
+
+    // draw ray of overtake range
+    Gizmos.color = Color.white;
+    Gizmos.DrawRay(this.transform.position, this.transform.forward * overtakeRange);
+
+    // Note Enemy Position on the plane
+    Vector3 pointOnPlane = relativePlayerPlane.ClosestPointOnPlane(this.transform.position);
+    Gizmos.DrawLine(this.transform.position, pointOnPlane);
+    Gizmos.DrawLine(pointOnPlane, playerObject.transform.position);
   }
-  */
 }

@@ -16580,15 +16580,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 259
+      value: 489.7
       objectReference: {fileID: 0}
     - target: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 53.6
+      value: -121.5
       objectReference: {fileID: 0}
     - target: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -28.2
+      value: -214.2
       objectReference: {fileID: 0}
     - target: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
       propertyPath: m_LocalRotation.x
@@ -37825,10 +37825,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cruiseSpeed: 10
-  senseRange: 2500
-  combatSpeed: 75
+  senseRange: 400
+  combatSpeed: 40
   turnSpeed: 200
-  overtakeRange: 25
+  divertRange: 150
+  overtakeRange: 50
   sideOvertakeRange: 5
   realignRange: 100
 --- !u!65 &1289177054

@@ -174,6 +174,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8442f3d5a7637fe428bfe1a2dd15fae9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 70
+  health: 50
   shield: 5
   deathExplosion: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}

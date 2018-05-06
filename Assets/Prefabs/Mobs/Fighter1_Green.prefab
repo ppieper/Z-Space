@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114416451183311080}
   - component: {fileID: 114480140172527948}
   - component: {fileID: 65036578645563482}
+  - component: {fileID: 114913535325479196}
   m_Layer: 0
   m_Name: Fighter1_Green
   m_TagString: Untagged
@@ -177,3 +178,22 @@ MonoBehaviour:
   isEnemy: 1
   scanFont: {fileID: 12800000, guid: aa41c27cad5ffff4f952add96f3aab3e, type: 3}
   color: {r: 1, g: 0, b: 0, a: 0.957}
+--- !u!114 &114913535325479196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1595253564309200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cruiseSpeed: 10
+  senseRange: 400
+  combatSpeed: 50
+  turnSpeed: 1.5
+  divertRange: 150
+  overtakeRange: 50
+  sideOvertakeRange: 15
+  realignRange: 250

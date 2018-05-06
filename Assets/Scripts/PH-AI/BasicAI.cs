@@ -22,16 +22,16 @@ public class BasicAI : MonoBehaviour {
   public float cruiseSpeed = 10.0f;            // speed of the AI when not in combat
   // public float fov = 60.0f;                    // angle of view cone of AI to notice the player
   // public float viewRange = 2500.0f;            // effective range of the view cone of the AI to notice the player
-  public float senseRange = 2500.0f;           // effective range of the sense sphere of the AI to notice the player
+  public float senseRange = 400.0f;            // effective range of the sense sphere of the AI to notice the player
 
-  public float combatSpeed = 75.0f;            // speed of the AI when in combat
-  public float turnSpeed = 200.0f;             // turn speed of the AI
+  public float combatSpeed = 50.0f;            // speed of the AI when in combat
+  public float turnSpeed = 1.5f;               // turn speed of the AI
 
   public float divertRange = 75.0f;            // effective range of when they should start to move away from crashing (Should be bigger than overtakeRange)
   public float overtakeRange = 50.0f;          // effective range of when they start to attempt to overtake you
-  public float sideOvertakeRange = 7.5f;       // potential range of the distance of the player by the side
+  public float sideOvertakeRange = 15.0f;       // potential range of the distance of the player by the side
   public float realignRange = 250.0f;          // effective range of when they move away from the player before returning back in
-
+  
   private States state;                        // Current State of the AI
   private States prev;                         // Previous State of the AI (for Divert)
 
@@ -41,17 +41,15 @@ public class BasicAI : MonoBehaviour {
   private Ray detectRay;                       // Ray for detecting stuff
   private RaycastHit detectHit;                // Helper attribute for detectRay
   private Plane relativePlayerPlane;           // Plane for overtaking player
+  private float distanceToPlayerNormal;        // Distance to player in general
   private float distanceToPlayerPlane;         // Distance for trying to overtake player
-  private float planarDistanceToPlayer;        // Distance on plane from player for successful overtake
+  private Vector3 planarDistanceToPlayer;      // Distance on plane from player for successful overtake
+  private Vector3 oldDirection;                // Helper attribute for divert
   private DetectOutput detectResult;           // The output string of what the detectRay found
   private bool playerOnCrosshair;              // Check if the player is on the enemy's cross-hair (independent of other ranges)
+  private bool canOvertake;                    // Check if it allows to overtake
   private float detectFromOverlapBias = 5.0f;  // Evoked bias for if detect player in one range, should also move ray towards to fix it
 
-
-  void Awake()
-  {
-    playerObject = GameObject.Find("PH-Ship");
-  }
 
   // Use this for initialization
   void Start ()
@@ -85,11 +83,16 @@ public class BasicAI : MonoBehaviour {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to APPROACH :: Check if they sense the player
-      else if (Vector3.Distance(playerObject.transform.position, this.transform.position) <= senseRange)
+      else if (distanceToPlayerNormal <= senseRange)
       {
         state = States.APPROACH;
-        //  TRANSITION to ATTACK :: Check if they already have player in their cross-hair
-        if (playerOnCrosshair) {
+        // TRANSITION to OVERTAKE :: Check if within overtake range & general 
+        if (canOvertake)
+        {
+          state = States.OVERTAKE;
+        } //  TRANSITION to ATTACK :: Check if they already have player in their cross-hair
+        else if (playerOnCrosshair)
+        {
           state = States.ATTACK;
         }
       }
@@ -104,6 +107,10 @@ public class BasicAI : MonoBehaviour {
       {
         prev = state;
         state = States.DIVERT;
+      } // TRANSITION to OVERTAKE :: Check if within overtake range & general range
+      else if (canOvertake)
+      {
+        state = States.OVERTAKE;
       } // TRANSITION to ATTACK :: Check if they have player in their cross-hair
       else if (playerOnCrosshair)
       {
@@ -120,6 +127,10 @@ public class BasicAI : MonoBehaviour {
       {
         prev = state;
         state = States.DIVERT;
+      } // TRANSITION to OVERTAKE :: Check if within overtake range & general range
+      else if (canOvertake)
+      {
+        state = States.OVERTAKE;
       } // TRANSITION to APPROACH :: Check if they have player is out of their cross-hair
       else if (!playerOnCrosshair)
       {
@@ -140,7 +151,7 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.OVERTAKE)
     {
       // ACTION :: When closing in to the player, chasing, overtake onto the side
-
+      // no additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
       if (detectResult == DetectOutput.OBSTACLE)
@@ -148,11 +159,11 @@ public class BasicAI : MonoBehaviour {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to REALIGN :: Check if they are on the side of the player
-      else if (distanceToPlayerPlane >= detectFromOverlapBias)
+      else if (-distanceToPlayerPlane >= detectFromOverlapBias)
       {
         state = States.REALIGN;
       } // TRANSITION to APPROACH :: Check if the player is too fast to try to overtake
-      else if (detectResult == DetectOutput.NONE)
+      else if (distanceToPlayerNormal >= overtakeRange)
       {
         state = States.APPROACH;
       }
@@ -168,7 +179,7 @@ public class BasicAI : MonoBehaviour {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to APPROACH :: Check if they are away enough to then return back to action
-      else if (Vector3.Distance(playerObject.transform.position, this.transform.position) >= realignRange)
+      else if (distanceToPlayerNormal >= realignRange)
       {
         state = States.APPROACH;
       }
@@ -188,28 +199,62 @@ public class BasicAI : MonoBehaviour {
     {
       // ACTION :: Turn themselves to the player to attack
       //enemyOwnRB.AddForce(transform.forward*combatSpeed, ForceMode.Acceleration);
+
+      // translate
       this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
-      // TODO: Add turning
+      // rotate to player
+      Vector3 direction = playerObject.transform.position - this.transform.position;
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
     }
     else if (state == States.ATTACK)
     {
       // ACTION :: Fire at the player
-      // TODO: Add attack mechanic while moving and turning
+
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate to player
+      Vector3 direction = playerObject.transform.position - this.transform.position;
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
+      // TODO: Add attack
+
     }
     else if (state == States.DIVERT)
     {
       // ACTION :: Turn away from crashing
-      // TODO: Add moving and turning
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate at direction of normal
+      Vector3 direction = detectHit.normal;
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
     }
     else if (state == States.OVERTAKE)
     {
       // ACTION :: When closing in to the player, chasing, overtake onto the side
-      // TODO: maintain distance of the circle with movement and SHIFT
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate to player's direction
+      Vector3 direction = playerObject.transform.forward;  // match the direction of the player ship
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
+
+      // add shift
+      if (planarDistanceToPlayer.magnitude < sideOvertakeRange)
+        this.transform.Translate(planarDistanceToPlayer * Time.deltaTime * 1f);
+      else
+        this.transform.Translate(planarDistanceToPlayer * Time.deltaTime * -1f);
     }
     else if (state == States.REALIGN)
     {
       // ACTION :: After overtaking, turn around to reapproach to the player
-      // TODO: Turn away from the player
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate away from player
+      Vector3 direction = -(playerObject.transform.position - this.transform.position);
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
     }
 
     UpdateStuff();
@@ -221,12 +266,15 @@ public class BasicAI : MonoBehaviour {
     // set the relative player plane at the player with the normal of the enemy's forward
     relativePlayerPlane.SetNormalAndPosition(this.transform.forward, playerObject.transform.position);
 
+    // calculate general distance
+    distanceToPlayerNormal = Vector3.Distance(playerObject.transform.position, this.transform.position);
+
     // set the point on plane for the proceeding 
     Vector3 pointOnPlane = relativePlayerPlane.ClosestPointOnPlane(this.transform.position);
     // calculate the current distance to plane
     distanceToPlayerPlane = Vector3.Distance(this.transform.position, pointOnPlane);
     // calculate the current distance on plane to player
-    planarDistanceToPlayer = Vector3.Distance(pointOnPlane, playerObject.transform.position);
+    planarDistanceToPlayer = pointOnPlane - playerObject.transform.position;
 
     // reset the ray to point
     detectRay.origin = this.transform.position;
@@ -305,6 +353,12 @@ public class BasicAI : MonoBehaviour {
         detectResult = DetectOutput.NONE;
       }
     }
+
+    // Check if allows to overtake as behind the plane and also general distance
+    if (-distanceToPlayerPlane <= overtakeRange && distanceToPlayerNormal <= overtakeRange)
+      canOvertake = true;
+    else
+      canOvertake = false;
   }
 
   // debug on draw gizmo
@@ -350,6 +404,7 @@ public class BasicAI : MonoBehaviour {
     Gizmos.DrawRay(this.transform.position + this.transform.forward * divertRange, this.transform.forward * (overtakeRange-divertRange));
 
     // Create a ring
+    /*
     Vector3 prevVec, currVec;
     int curveFidelity = 32;
     float radStep = Mathf.PI * 2 / curveFidelity;
@@ -360,14 +415,17 @@ public class BasicAI : MonoBehaviour {
       currVec = (this.transform.right * Mathf.Cos(radStep * i) + this.transform.up * Mathf.Sin(radStep * i)) * sideOvertakeRange + playerObject.transform.position;
       Gizmos.DrawLine(prevVec,currVec);
     }
+    */
 
     // draw ray of overtake range
     Gizmos.color = Color.white;
     Gizmos.DrawRay(this.transform.position, this.transform.forward * overtakeRange);
 
     // Note Enemy Position on the plane
+    /*
     Vector3 pointOnPlane = relativePlayerPlane.ClosestPointOnPlane(this.transform.position);
     Gizmos.DrawLine(this.transform.position, pointOnPlane);
     Gizmos.DrawLine(pointOnPlane, playerObject.transform.position);
+    */
   }
 }

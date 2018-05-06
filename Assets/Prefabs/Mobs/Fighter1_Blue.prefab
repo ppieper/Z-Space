@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 114929697964232038}
   - component: {fileID: 114655654964105158}
   - component: {fileID: 65846292315437904}
+  - component: {fileID: 114072520766026464}
   m_Layer: 0
   m_Name: Fighter1_Blue
   m_TagString: Untagged
@@ -132,6 +133,25 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114072520766026464
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1264655944657052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cruiseSpeed: 10
+  senseRange: 400
+  combatSpeed: 50
+  turnSpeed: 1.5
+  divertRange: 150
+  overtakeRange: 50
+  sideOvertakeRange: 15
+  realignRange: 250
 --- !u!114 &114203056596369430
 MonoBehaviour:
   m_ObjectHideFlags: 1

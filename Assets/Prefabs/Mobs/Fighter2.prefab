@@ -402,7 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc763159d97c2c4a9564749577ecf49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scanText: Pirate
+  scanText: PIRATE SCUM
   bounty: 1
   isEnemy: 1
   scanFont: {fileID: 12800000, guid: aa41c27cad5ffff4f952add96f3aab3e, type: 3}

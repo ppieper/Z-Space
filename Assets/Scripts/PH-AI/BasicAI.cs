@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,62 +7,92 @@ public class BasicAI : MonoBehaviour {
   // list of states
   enum States { CRUISE, APPROACH, ATTACK, DIVERT, OVERTAKE, REALIGN };
     // CRUISE :: Default state that just roam around until it senses a player
-    // APPROACH :: Approaches to the player target until it is on their crosshair
+    // APPROACH :: Approaches to the player target until it is on their cross-hair
     // ATTACK :: Fires at the player at the target
     // DIVERT :: When dangerously close, the enemy turns away to prevent crashing
     // OVERTAKE :: When closing in to the player, chasing, overtake onto the side
     // REALIGN :: After overtaking, turn around to reapproach to the player
-
-  // enemy count
-  public static int enemyCount = 0;
+  // list of possible objects
+  enum DetectOutput { NONE, PLAYER, OBSTACLE };
+    // NONE :: Detect nothing in range of overtakeRange nor divertRange
+    // PLAYER :: Detect the player in divertRange and nothing else in overtakeRange
+    // OBSTACLE :: Detect an object overtakeRange regardless of divertRange notices player
 
   // AI Properties
-  public float cruiseSpeed = 10.0f;    // speed of the AI when not in combat
-  public float fov = 60.0f;            // angle of view cone of AI to notice the player
-  public float viewRange = 2500.0f;    // effective range of the view cone of the AI to notice the player
-  public float senseRange = 500.0f;    // effective range of the sense sphere of the AI to notice the player
+  public float cruiseSpeed = 10.0f;            // speed of the AI when not in combat
+  // public float fov = 60.0f;                    // angle of view cone of AI to notice the player
+  // public float viewRange = 2500.0f;            // effective range of the view cone of the AI to notice the player
+  public float senseRange = 400.0f;            // effective range of the sense sphere of the AI to notice the player
 
-  public float combatSpeed = 75.0f;    // speed of the AI when in combat
-  public float turnSpeed = 200.0f;     // turn speed of the AI
+  public float combatSpeed = 50.0f;            // speed of the AI when in combat
+  public float turnSpeed = 1.5f;               // turn speed of the AI
 
-  public float overtakeRange = 25.0f;  // effective range of when they start to attempt to overttake you
-  public float sideOTRange = 5.0f;     // potential range of the distance of the player by the side
-  public float realignRange = 100.0f;  // effective range of when they move away from the player before returning back in
+  public float divertRange = 75.0f;            // effective range of when they should start to move away from crashing (Should be bigger than overtakeRange)
+  public float overtakeRange = 50.0f;          // effective range of when they start to attempt to overtake you
+  public float sideOvertakeRange = 15.0f;       // potential range of the distance of the player by the side
+  public float realignRange = 250.0f;          // effective range of when they move away from the player before returning back in
+  
+  private States state;                        // Current State of the AI
+  private States prev;                         // Previous State of the AI (for Divert)
 
-  private Rigidbody rb;                // RigidBody of the AI
-  private Ray detect;                  // Ray for detecting stuff
+  private Rigidbody enemyOwnRB;                // Rigidbody of the AI
+  private GameObject playerObject;             // Reference to the player ship for position and other what not
 
-  private States state;                // Current State of the AI
-  private States prev;                 // Previous State of the AI (for Divert)
+  private Ray detectRay;                       // Ray for detecting stuff
+  private RaycastHit detectHit;                // Helper attribute for detectRay
+  private Plane relativePlayerPlane;           // Plane for overtaking player
+  private float distanceToPlayerNormal;        // Distance to player in general
+  private float distanceToPlayerPlane;         // Distance for trying to overtake player
+  private Vector3 planarDistanceToPlayer;      // Distance on plane from player for successful overtake
+  private Vector3 oldDirection;                // Helper attribute for divert
+  private DetectOutput detectResult;           // The output string of what the detectRay found
+  private bool playerOnCrosshair;              // Check if the player is on the enemy's cross-hair (independent of other ranges)
+  private bool canOvertake;                    // Check if it allows to overtake
+  private float detectFromOverlapBias = 5.0f;  // Evoked bias for if detect player in one range, should also move ray towards to fix it
+
 
   // Use this for initialization
-  void Start () {
-    enemyCount++;
-    rb = GetComponent<Rigidbody>();
-    rb.velocity = transform.forward * cruiseSpeed;
+  void Start ()
+  {
+    // get the player object for reference
+    playerObject = GameObject.Find("PH-Ship");
+    // get the enemy ship stuff for movement
+    enemyOwnRB = GetComponent<Rigidbody>();
 
+    // initialize the states
     prev = state = States.CRUISE;
-    RayUpdate();
+
+    // initialize the latter stuff (from UpdateStuff w/ initialization)
+    detectRay = new Ray(this.transform.position, this.transform.forward);
+    relativePlayerPlane = new Plane(this.transform.forward, playerObject.transform.position);
+
+    UpdateStuff();
   }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+  {
     if (state == States.CRUISE)
     {
       // ACTION :: Default state that just roam around until it senses a player
-
+      // no additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to APPROACH :: Check if they sense the player
-      else if (false)
+      else if (distanceToPlayerNormal <= senseRange)
       {
         state = States.APPROACH;
-        //  TRANSITION to ATTACK :: Check if they already have player in their crosshair
-        if (false) {
+        // TRANSITION to OVERTAKE :: Check if within overtake range & general 
+        if (canOvertake)
+        {
+          state = States.OVERTAKE;
+        } //  TRANSITION to ATTACK :: Check if they already have player in their cross-hair
+        else if (playerOnCrosshair)
+        {
           state = States.ATTACK;
         }
       }
@@ -70,16 +100,19 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.APPROACH)
     {
       // ACTION :: Turn themselves to the player to attack
-      rb.AddForce(transform.forward * combatSpeed, ForceMode.Acceleration);
-
+      // no additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
-      } // TRANSITION to ATTACK :: Check if they have player in their crosshair
-      else if (false)
+      } // TRANSITION to OVERTAKE :: Check if within overtake range & general range
+      else if (canOvertake)
+      {
+        state = States.OVERTAKE;
+      } // TRANSITION to ATTACK :: Check if they have player in their cross-hair
+      else if (playerOnCrosshair)
       {
         state = States.ATTACK;
       }
@@ -87,15 +120,19 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.ATTACK)
     {
       // ACTION :: Fire at the player
-
+      // No additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
-      } // TRANSITION to APPROACH :: Check if they have player is out of their crosshair
-      else if (false)
+      } // TRANSITION to OVERTAKE :: Check if within overtake range & general range
+      else if (canOvertake)
+      {
+        state = States.OVERTAKE;
+      } // TRANSITION to APPROACH :: Check if they have player is out of their cross-hair
+      else if (!playerOnCrosshair)
       {
         state = States.APPROACH;
       }
@@ -103,10 +140,10 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.DIVERT)
     {
       // ACTION :: Turn away from crashing
-
+      // no additional code required
 
       // TRANSITION to [PREVIOUS STATE] :: Check if they successfully divert
-      if (false)
+      if (detectResult != DetectOutput.OBSTACLE)
       {
         state = prev;
       }
@@ -114,19 +151,19 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.OVERTAKE)
     {
       // ACTION :: When closing in to the player, chasing, overtake onto the side
-
+      // no additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to REALIGN :: Check if they are on the side of the player
-      else if (false)
+      else if (-distanceToPlayerPlane >= detectFromOverlapBias)
       {
         state = States.REALIGN;
       } // TRANSITION to APPROACH :: Check if the player is too fast to try to overtake
-      else if (false)
+      else if (distanceToPlayerNormal >= overtakeRange)
       {
         state = States.APPROACH;
       }
@@ -134,15 +171,15 @@ public class BasicAI : MonoBehaviour {
     else if (state == States.REALIGN)
     {
       // ACTION :: After overtaking, turn around to reapproach to the player
-
+      // no additional code required
 
       // TRANSITION to DIVERT :: Check if they might almost crash
-      if (false)
+      if (detectResult == DetectOutput.OBSTACLE)
       {
         prev = state;
         state = States.DIVERT;
       } // TRANSITION to APPROACH :: Check if they are away enough to then return back to action
-      else if (false)
+      else if (distanceToPlayerNormal >= realignRange)
       {
         state = States.APPROACH;
       }
@@ -155,60 +192,240 @@ public class BasicAI : MonoBehaviour {
     if (state == States.CRUISE)
     {
       // ACTION :: Default state that just roam around until it senses a player
-      rb.AddForce(transform.forward * cruiseSpeed, ForceMode.Acceleration);
-
+      //enemyOwnRB.AddForce(transform.forward*cruiseSpeed, ForceMode.Acceleration);
+      this.transform.Translate(0, 0, cruiseSpeed * Time.deltaTime);
     }
     else if (state == States.APPROACH)
     {
       // ACTION :: Turn themselves to the player to attack
-      rb.AddForce(transform.forward * combatSpeed, ForceMode.Acceleration);
+      //enemyOwnRB.AddForce(transform.forward*combatSpeed, ForceMode.Acceleration);
 
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate to player
+      Vector3 direction = playerObject.transform.position - this.transform.position;
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
     }
     else if (state == States.ATTACK)
     {
       // ACTION :: Fire at the player
 
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate to player
+      Vector3 direction = playerObject.transform.position - this.transform.position;
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
+      // TODO: Add attack
+
     }
     else if (state == States.DIVERT)
     {
       // ACTION :: Turn away from crashing
-
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate at direction of normal
+      Vector3 direction = detectHit.normal;
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
     }
     else if (state == States.OVERTAKE)
     {
       // ACTION :: When closing in to the player, chasing, overtake onto the side
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate to player's direction
+      Vector3 direction = playerObject.transform.forward;  // match the direction of the player ship
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
 
+      // add shift
+      if (planarDistanceToPlayer.magnitude < sideOvertakeRange)
+        this.transform.Translate(planarDistanceToPlayer * Time.deltaTime * 1f);
+      else
+        this.transform.Translate(planarDistanceToPlayer * Time.deltaTime * -1f);
     }
     else if (state == States.REALIGN)
     {
       // ACTION :: After overtaking, turn around to reapproach to the player
-      
+      // translate
+      this.transform.Translate(0, 0, combatSpeed * Time.deltaTime);
+      // rotate away from player
+      Vector3 direction = -(playerObject.transform.position - this.transform.position);
+      this.transform.rotation = Quaternion.Slerp(this.transform.rotation,
+        Quaternion.LookRotation(direction), turnSpeed * Time.deltaTime);
     }
 
-    RayUpdate();
+    UpdateStuff();
   }
 
 
-  private void RayUpdate()
+  private void UpdateStuff()
   {
-    detect.direction = transform.forward;
-    detect.origin = transform.position;
+    // set the relative player plane at the player with the normal of the enemy's forward
+    relativePlayerPlane.SetNormalAndPosition(this.transform.forward, playerObject.transform.position);
+
+    // calculate general distance
+    distanceToPlayerNormal = Vector3.Distance(playerObject.transform.position, this.transform.position);
+
+    // set the point on plane for the proceeding 
+    Vector3 pointOnPlane = relativePlayerPlane.ClosestPointOnPlane(this.transform.position);
+    // calculate the current distance to plane
+    distanceToPlayerPlane = Vector3.Distance(this.transform.position, pointOnPlane);
+    // calculate the current distance on plane to player
+    planarDistanceToPlayer = pointOnPlane - playerObject.transform.position;
+
+    // reset the ray to point
+    detectRay.origin = this.transform.position;
+    detectRay.direction = this.transform.forward;
+
+    // check if the player is on the cross-hair of the enemy
+    if (Physics.Raycast(detectRay, out detectHit))
+    {
+      // verify if it is actually the player ship
+      if (detectHit.transform.gameObject.name == "PH-Ship")
+      {
+        playerOnCrosshair = true;
+      }
+      else
+      {
+        playerOnCrosshair = false;
+      }
+    }
+    else
+    {
+      playerOnCrosshair = false;
+    }
+
+    // compute the possible output for detectResult
+    // check if an object is within range of overtakeRange to check for player ship
+    if (Physics.Raycast(detectRay, out detectHit, overtakeRange))
+    {
+      // verify if it is actually the player ship
+      if (detectHit.transform.gameObject.name == "PH-Ship")
+      {
+        // if so, check what is ahead to divertRange
+        // first change detectRay's origin pushing past the ship w/ some bias and add the length
+        float offsetLength = detectHit.distance + detectFromOverlapBias;
+        detectRay.origin += detectRay.direction * offsetLength;
+
+        if (Physics.Raycast(detectRay, out detectHit, divertRange - offsetLength))
+        {
+          // if there is an object past player, return an OBSTACLE DetectOutput
+          detectResult = DetectOutput.OBSTACLE;
+        }
+        else
+        {
+          // if there's nothing else past player, return an PLAYER DetectOutput
+          detectResult = DetectOutput.PLAYER;
+        }
+
+        // revert back the origin to enemy
+        detectRay.origin = this.transform.position;
+      }
+      else
+      {
+        // if not, return an OBSTACLE DetectOutput
+        detectResult = DetectOutput.OBSTACLE;
+      }
+    }
+    else
+    {
+      // if not within overtakeRange, check if within divertRange instead
+      if (Physics.Raycast(detectRay, out detectHit, divertRange))
+      {
+        // verify if it is definitely not the player ship
+        if (detectHit.transform.gameObject.name != "PH-Ship")
+        {
+          // if so, return an OBSTACLE DetectOutput
+          detectResult = DetectOutput.OBSTACLE;
+        }
+        else
+        {
+          // if not, return a NONE DetectOutput
+          detectResult = DetectOutput.NONE;
+        }
+      }
+      else
+      {
+        // if not within divertRange, return a NONE DetectOutput
+        detectResult = DetectOutput.NONE;
+      }
+    }
+
+    // Check if allows to overtake as behind the plane and also general distance
+    if (-distanceToPlayerPlane <= overtakeRange && distanceToPlayerNormal <= overtakeRange)
+      canOvertake = true;
+    else
+      canOvertake = false;
   }
 
   // debug on draw gizmo
   private void OnDrawGizmos()
   {
-    Gizmos.color = Color.red;
-    // draw sense sphere
-    Gizmos.DrawWireSphere(transform.position, senseRange);
-    // draw view range
-    Gizmos.DrawRay(transform.position, transform.forward * viewRange);
-    // draw overrtake range
-    Gizmos.color = Color.green;
-    Gizmos.DrawWireSphere(transform.position, overtakeRange);
-    Gizmos.DrawWireSphere(transform.position, sideOTRange);
-    // draw realign
-    Gizmos.color = Color.cyan;
-    Gizmos.DrawWireSphere(transform.position, realignRange);
+    Color temp = Color.cyan;
+
+    if (state == States.CRUISE)
+    {
+      temp = Color.cyan;
+      Gizmos.color = temp;
+
+      // draw sense sphere
+      Gizmos.DrawWireSphere(this.transform.position, senseRange);
+    }
+    else if (state == States.APPROACH)
+    {
+      temp = Color.yellow;
+    }
+    else if (state == States.ATTACK)
+    {
+      temp = Color.red;
+    }
+    else if (state == States.DIVERT)
+    {
+      temp = Color.magenta;
+    }
+    else if (state == States.OVERTAKE)
+    {
+      temp = Color.green;
+    }
+    else if (state == States.REALIGN)
+    {
+      temp = new Color(0.5F, 0.5F, 1.0F);
+    }
+    
+
+    // General Gizmos
+    Gizmos.color = temp;
+    Gizmos.DrawWireSphere(this.transform.position, 10.0f);
+
+    // draw ray of divert range
+    Gizmos.DrawRay(this.transform.position + this.transform.forward * divertRange, this.transform.forward * (overtakeRange-divertRange));
+
+    // Create a ring
+    /*
+    Vector3 prevVec, currVec;
+    int curveFidelity = 32;
+    float radStep = Mathf.PI * 2 / curveFidelity;
+    currVec = this.transform.right * sideOvertakeRange + playerObject.transform.position;
+    for (int i = 1; i <= curveFidelity; ++i)
+    {
+      prevVec = currVec;
+      currVec = (this.transform.right * Mathf.Cos(radStep * i) + this.transform.up * Mathf.Sin(radStep * i)) * sideOvertakeRange + playerObject.transform.position;
+      Gizmos.DrawLine(prevVec,currVec);
+    }
+    */
+
+    // draw ray of overtake range
+    Gizmos.color = Color.white;
+    Gizmos.DrawRay(this.transform.position, this.transform.forward * overtakeRange);
+
+    // Note Enemy Position on the plane
+    /*
+    Vector3 pointOnPlane = relativePlayerPlane.ClosestPointOnPlane(this.transform.position);
+    Gizmos.DrawLine(this.transform.position, pointOnPlane);
+    Gizmos.DrawLine(pointOnPlane, playerObject.transform.position);
+    */
   }
 }

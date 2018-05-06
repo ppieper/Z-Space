@@ -17,6 +17,8 @@ public class Gun : MonoBehaviour
     public ParticleSystem muzzleFlash2;
     public ParticleSystem laser1;
     public ParticleSystem laser2;
+	public ParticleSystem laser3;
+	public ParticleSystem laser4;
     public GameObject impactEffect;
     public GameObject impactEffect2;
     public GameObject FDT;
@@ -27,8 +29,12 @@ public class Gun : MonoBehaviour
     public Text currencyText;
     public float fireRate = 15f;
     public float fireRatePower = 1f;
+	public AudioSource primaryFireAudio;
+	public AudioSource altFireAudio;
     private float nextTimeToFire = 0f;
     private float nextTimeToFire1 = 0f;
+	public bool damageText = false;
+	private bool primaryFireAudioPlaying = false;
 
     // Update is called once per frame
     void Update()
@@ -36,16 +42,30 @@ public class Gun : MonoBehaviour
 
 		if (Input.GetButton("Fire1") && !GameManager.Instance.isPaused && Time.time >= nextTimeToFire)
         {
+			if (!primaryFireAudioPlaying) 
+			{
+				primaryFireAudioPlaying = true;
+				primaryFireAudio.loop = true;
+				primaryFireAudio.Play();
+			}
+
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
-
         }
+		// stop audio
+		if (!Input.GetButton ("Fire1")) 
+		{
+			primaryFireAudioPlaying = false;
+			primaryFireAudio.loop = false;
+			primaryFireAudio.Stop();
+		}
+
         if (Input.GetButtonDown("Fire2") && !GameManager.Instance.isPaused && Time.time >= nextTimeToFire1)
         {
             nextTimeToFire1 = Time.time + 1f / fireRatePower;
             ShootPowerWeapon();
-
         }
+
         ammoText.text = totalAmmo.ToString();
 		currencyText.text = totalCurrency.ToString();
     }
@@ -82,15 +102,19 @@ public class Gun : MonoBehaviour
                     int dmg = rnd.Next(damageMin, damageMax);  //dmg range
                     target.TakeDamage(dmg);
                     Debug.LogFormat("{0} was dealt {1} damage", target, dmg);
-                    TextMesh textObject = GameObject.Find("FDT").GetComponentInParent<TextMesh>();
-                    textObject.text = dmg.ToString();
-                    GameObject FDTgo = Instantiate(FDT, hit.point, Quaternion.identity); //temp code
+					if(damageText)
+					{
+	                    TextMesh textObject = GameObject.Find("FDT").GetComponentInParent<TextMesh>();
+	                    textObject.text = dmg.ToString();
+	                    GameObject FDTgo = Instantiate(FDT, hit.point, Quaternion.identity); //temp code
+						FDTgo.transform.SetParent(GameObject.FindGameObjectWithTag("UIDynamic").transform);
 
-                    textObject.text = " ";
+	                    textObject.text = " ";
 
-                    Destroy(FDTgo, 0.15f);//temp code
+	                    Destroy(FDTgo, 0.15f);//temp code
 
-                    //above is creating and destroying the combat text
+	                    //above is creating and destroying the combat text
+					}
 
 					if (target.health <= 0)
 					{
@@ -104,6 +128,7 @@ public class Gun : MonoBehaviour
                 }
 
                 GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+				impactGO.transform.SetParent (GameObject.FindGameObjectWithTag("WorldDynamic").transform);
                 Destroy(impactGO, 1f);
             }
     }
@@ -115,7 +140,10 @@ public class Gun : MonoBehaviour
             RaycastHit hit;
             muzzleFlash.Play();
             muzzleFlash2.Play();
+			laser3.Play();
+			laser4.Play();
             totalAmmo = (totalAmmo - 1);
+			altFireAudio.Play();
 
             if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
             {
@@ -139,15 +167,19 @@ public class Gun : MonoBehaviour
                     int dmg = rnd.Next(powerDamageMin, powerDamageMax);  //dmg range
                     target.TakeDamage(dmg);
                     Debug.LogFormat("{0} was dealt {1} damage", target, dmg);
-                    TextMesh textObject = GameObject.Find("FDTPower").GetComponentInParent<TextMesh>();
-                    textObject.text = dmg.ToString();
-                    GameObject FDTgo = Instantiate(FDTPower, hit.point, Quaternion.identity); //temp code
+					if(damageText)
+					{
+	                    TextMesh textObject = GameObject.Find("FDTPower").GetComponentInParent<TextMesh>();
+	                    textObject.text = dmg.ToString();
+	                    GameObject FDTgo = Instantiate(FDTPower, hit.point, Quaternion.identity); //temp code
+						FDTgo.transform.SetParent(GameObject.FindGameObjectWithTag("UIDynamic").transform);
 
-                    textObject.text = " ";
+	                    textObject.text = " ";
 
-                    Destroy(FDTgo, 0.30f);//temp code
+	                    Destroy(FDTgo, 0.30f);//temp code
 
-                    //above is creating and destroying the combat text
+	                    //above is creating and destroying the combat text
+					}
 
                     if (target.health <= 0)
                     {
@@ -161,6 +193,7 @@ public class Gun : MonoBehaviour
                 }
 
                 GameObject impactGO = Instantiate(impactEffect2, hit.point, Quaternion.LookRotation(hit.normal));
+				impactGO.transform.SetParent (GameObject.FindGameObjectWithTag("WorldDynamic").transform);
                 Destroy(impactGO, 1f);
             }
         }

@@ -56,6 +56,7 @@ public class Target : MonoBehaviour {
 
         // destroy the indicators so they don't show up
 		Destroy(enemy);
+		gameObject.GetComponent<ScanResults>().enabled = false;
 		// disable all the associated meshrenderers while we wait for object to be GC'd
 		MeshRenderer[] renderers = gameObject.GetComponentsInChildren<MeshRenderer>();
 		foreach(MeshRenderer renderer in renderers)

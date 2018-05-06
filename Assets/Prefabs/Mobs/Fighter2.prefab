@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 114163902319658470}
   - component: {fileID: 114046172667622482}
   - component: {fileID: 65158964492378722}
+  - component: {fileID: 114956864359501948}
   m_Layer: 0
   m_Name: Fighter2
   m_TagString: Untagged
@@ -435,3 +436,22 @@ MonoBehaviour:
   health: 50
   shield: 5
   deathExplosion: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}
+--- !u!114 &114956864359501948
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992592023415500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cruiseSpeed: 10
+  senseRange: 400
+  combatSpeed: 50
+  turnSpeed: 1.5
+  divertRange: 150
+  overtakeRange: 50
+  sideOvertakeRange: 15
+  realignRange: 250

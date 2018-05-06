@@ -14,7 +14,8 @@ public class EnemyFire : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        
+        GameObject firebullet = Instantiate(projectile, transform.position, Quaternion.identity);
+        firebullet.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
         
         
     }
@@ -32,8 +33,7 @@ public class EnemyFire : MonoBehaviour {
 
     void Shoot()
     {
-
-        GameObject firebullet = Instantiate(projectile, spawn.transform.position, Quaternion.identity) as GameObject;
-        firebullet.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
+        
+        transform.position += transform.forward * speed * Time.deltaTime;
     }
 }

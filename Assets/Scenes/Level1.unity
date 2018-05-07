@@ -17351,25 +17351,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,
     type: 2}
   m_PrefabInternal: {fileID: 844383354}
---- !u!114 &514673922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 514673920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cruiseSpeed: 1
-  senseRange: 400
-  combatSpeed: 1
-  turnSpeed: 0.1
-  divertRange: 150
-  overtakeRange: 50
-  sideOvertakeRange: 15
-  realignRange: 250
 --- !u!65 &514673923
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20542,6 +20523,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 65158964492378722, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
+    - {fileID: 114956864359501948, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &610577136
@@ -34625,25 +34607,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,
     type: 2}
   m_PrefabInternal: {fileID: 1624289705}
---- !u!114 &1135397845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1135397843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cruiseSpeed: 1
-  senseRange: 400
-  combatSpeed: 1
-  turnSpeed: 0.1
-  divertRange: 150
-  overtakeRange: 50
-  sideOvertakeRange: 15
-  realignRange: 250
 --- !u!65 &1135397846
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -34965,11 +34928,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cruiseSpeed: 1
+  cruiseSpeed: 10
   senseRange: 400
-  combatSpeed: 1
-  turnSpeed: 0.1
-  divertRange: 150
+  combatSpeed: 50
+  turnSpeed: 1.5
+  divertRange: 75
   overtakeRange: 50
   sideOvertakeRange: 15
   realignRange: 250
@@ -39035,25 +38998,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,
     type: 2}
   m_PrefabInternal: {fileID: 2003434161}
---- !u!114 &1275155418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1275155416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cruiseSpeed: 1
-  senseRange: 400
-  combatSpeed: 1
-  turnSpeed: 0.1
-  divertRange: 150
-  overtakeRange: 50
-  sideOvertakeRange: 15
-  realignRange: 250
 --- !u!65 &1275155419
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -53210,25 +53154,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,
     type: 2}
   m_PrefabInternal: {fileID: 490462210}
---- !u!114 &1794077061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1794077059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cruiseSpeed: 1
-  senseRange: 400
-  combatSpeed: 1
-  turnSpeed: 0.1
-  divertRange: 150
-  overtakeRange: 50
-  sideOvertakeRange: 15
-  realignRange: 250
 --- !u!65 &1794077062
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -55751,25 +55676,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,
     type: 2}
   m_PrefabInternal: {fileID: 1676682499}
---- !u!114 &1894864918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1894864916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cruiseSpeed: 1
-  senseRange: 400
-  combatSpeed: 1
-  turnSpeed: 0.1
-  divertRange: 150
-  overtakeRange: 50
-  sideOvertakeRange: 15
-  realignRange: 250
 --- !u!65 &1894864919
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -56687,25 +56593,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,
     type: 2}
   m_PrefabInternal: {fileID: 557566668}
---- !u!114 &1905294287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1905294285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cruiseSpeed: 1
-  senseRange: 400
-  combatSpeed: 1
-  turnSpeed: 0.1
-  divertRange: 150
-  overtakeRange: 50
-  sideOvertakeRange: 15
-  realignRange: 250
 --- !u!65 &1905294288
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57097,6 +56984,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 65158964492378722, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
+    - {fileID: 114956864359501948, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &1914805125 stripped
@@ -61664,25 +61552,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4063739074781268, guid: 1191dd7739ff569459c446fff862c5fd,
     type: 2}
   m_PrefabInternal: {fileID: 358872812}
---- !u!114 &2099206383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2099206381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c67d1aaf1edb94b92ab3ec085d57a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cruiseSpeed: 1
-  senseRange: 400
-  combatSpeed: 1
-  turnSpeed: 0.1
-  divertRange: 150
-  overtakeRange: 50
-  sideOvertakeRange: 15
-  realignRange: 250
 --- !u!65 &2099206384
 BoxCollider:
   m_ObjectHideFlags: 0

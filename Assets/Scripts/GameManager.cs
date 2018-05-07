@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
 	private GameObject gameOverMenu;
 	[SerializeField]
 	private GameObject outOfBoundsWarning;
+	[SerializeField]
+	private GameObject congratulationsMessage;
 	private bool outOfBounds = false;
 	private bool canUseMenu = true;
 
@@ -151,6 +153,12 @@ public class GameManager : MonoBehaviour {
 	private void FlashWarning()
 	{
 		outOfBoundsWarning.SetActive(!outOfBoundsWarning.activeInHierarchy);
+	}
+
+	// Give player their congratulations
+	public void ShowCongratulations()
+	{
+		congratulationsMessage.SetActive(true);
 	}
 
 	private void HideMenusNotifications()

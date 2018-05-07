@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour {
 
 		maxHealth = target.health;
 		maxShield = target.shield;
-		rechargeRate = maxShield/1000f;
+		rechargeRate = 1f;
 
 		InitializeIndicator();
 		InitializeHealthBar();
@@ -108,7 +108,7 @@ public class Enemy : MonoBehaviour {
 	{
 		// slowly recharge shield
 		if (target.shield < maxShield)
-			target.shield += rechargeRate;
+			target.shield += rechargeRate*Time.deltaTime;
 		shieldSlider.value = target.shield / maxShield;
 
 	}

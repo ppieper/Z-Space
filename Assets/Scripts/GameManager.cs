@@ -166,6 +166,7 @@ public class GameManager : MonoBehaviour {
 		pauseMenu.SetActive(false);
 		gameOverMenu.SetActive(false);
 		outOfBoundsWarning.SetActive(false);
+		congratulationsMessage.SetActive(false);
 	}
 
 	public GameObject GetPlayer()

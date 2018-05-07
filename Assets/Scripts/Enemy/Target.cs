@@ -53,6 +53,11 @@ public class Target : MonoBehaviour {
 		// remove enemy from enemy manager
 		Enemy enemy = gameObject.GetComponent<Enemy>();
 		EnemyManager.Instance.RemoveEnemy(enemy);
+		// quick hack for the demo
+		if (enemy.bounty == 1000f) 
+		{
+			GameManager.Instance.ShowCongratulations();
+		}
 
         // destroy the indicators so they don't show up
 		Destroy(enemy);

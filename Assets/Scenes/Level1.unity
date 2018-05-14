@@ -52975,7 +52975,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1992592023415500, guid: 1191dd7739ff569459c446fff862c5fd, type: 2}
       propertyPath: m_TagString
-      value: Enemy
+      value: MainBounty
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: color.r

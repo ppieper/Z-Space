@@ -23,7 +23,7 @@ public class Crosshair : MonoBehaviour {
 	void Update () {
 		if (Physics.Raycast (camera.transform.position, camera.transform.forward, out hit, Constants.weaponRange)) 
 		{
-			if(hit.transform.tag == "Enemy")
+			if(hit.transform.GetComponent<Enemy>())
 				image.color = enemyTargettedColor; // change crosshair color when enemy is targetted
 		} else 
 		{

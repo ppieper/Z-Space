@@ -53,8 +53,9 @@ public class Target : MonoBehaviour {
 		// remove enemy from enemy manager
 		Enemy enemy = gameObject.GetComponent<Enemy>();
 		EnemyManager.Instance.RemoveEnemy(enemy);
-		// quick hack for the demo
-		if (enemy.bounty == 1000f) 
+
+		// if enemy is the main bounty, show congratulation message
+		if (gameObject.tag == "MainBounty") 
 		{
 			GameManager.Instance.ShowCongratulations();
 		}

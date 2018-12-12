@@ -2,6 +2,8 @@
 
 Z-Space is a 3d space shooter game developed using the Unity engine.
 
+Unity games are written in C# and the code can be found under Assets/Scripts.
+
 For more information, view the presentation [slides](https://docs.google.com/presentation/d/1kqJHjSi1A18qEM8UO5gtxkkAI7cDN0bZ_Y1ApMpq6-E/edit?usp=sharing), or try the [demo itself](https://ppieper.github.io/demos/general/z-space/)!
 
 ## Build instructions:

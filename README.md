@@ -1,10 +1,16 @@
 # Z-Space
 
-Build instructions:
+Z-Space is a 3d space shooter game developed using the Unity engine.
+
+For more information, view the presentation [slides](https://docs.google.com/presentation/d/1kqJHjSi1A18qEM8UO5gtxkkAI7cDN0bZ_Y1ApMpq6-E/edit?usp=sharing), or try the [demo itself](https://ppieper.github.io/demos/general/z-space/)!
+
+## Build instructions:
 
 -Clone the git repository
 
 -In Unity, Open->the cloned repository
+
+-From there you may File->build and run the game on your platform of choice.
 
 Note: if you are unfamiliar with Git, run the following Git commands from the command-line:
 
@@ -16,18 +22,3 @@ You may need to do some configuration if you haven't used git before on your mac
 
 	git config --global user.name "Your Name Here" (this is what shows up in your commits-can be anything you want)
 	git config --global user.email your@email.com (this is the email address of your GitHub account)
-	
-Also please take the time to familiarize yourself with the commands and ask for help if you need to, to prevent any "accidents" 
-
-Commands you should know:
-
-	git branch
-	git checkout
-	git pull
-	git add --all
-	git commit -m "Message here"
-	git push
-	git fetch
-	git merge
-	
-Some of these can mess up things a bit so be sure you know what you're doing beforehand.
